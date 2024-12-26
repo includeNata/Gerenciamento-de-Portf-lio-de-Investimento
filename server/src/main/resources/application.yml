@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: project-N
+
+  profiles:
+    active: test
+
+  main:
+    banner-mode: off

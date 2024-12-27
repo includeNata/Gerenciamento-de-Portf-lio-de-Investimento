@@ -1,8 +1,8 @@
 import pluginJs from "@eslint/js";
-import pluginReact from "eslint-plugin-react";
-import pluginPrettier from "eslint-plugin-prettier";
 import pluginJsxA11y from "eslint-plugin-jsx-a11y";
-import pluginSimpleImportSort from "eslint-plugin-simple-import-sort"
+import pluginPrettier from "eslint-plugin-prettier";
+import pluginReact from "eslint-plugin-react";
+import pluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 

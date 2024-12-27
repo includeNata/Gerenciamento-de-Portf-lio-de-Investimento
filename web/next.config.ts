@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      {
+        source: "/proxy/rss",
+        destination: "https://www.infomoney.com.br/feed/",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

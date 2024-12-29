@@ -13,6 +13,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-toggle": "^1.1.1",
     "@radix-ui/react-toggle-group": "^1.1.1",
+    "@tanstack/react-query": "^4.36.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.17.0",
+    "@tanstack/eslint-plugin-query": "^4.38.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

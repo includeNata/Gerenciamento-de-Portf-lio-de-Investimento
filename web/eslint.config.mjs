@@ -3,6 +3,7 @@ import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 import pluginPrettier from "eslint-plugin-prettier";
 import pluginReact from "eslint-plugin-react";
 import pluginSimpleImportSort from "eslint-plugin-simple-import-sort";
+import eslintPluginQuery from "@tanstack/eslint-plugin-query";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -18,6 +19,7 @@ export default [
       prettier: pluginPrettier,
       "jsx-a11y": pluginJsxA11y,
       "simple-import-sort": pluginSimpleImportSort,
+      "eslint-plugin-query": eslintPluginQuery,
     },
     rules: {
       "prettier/prettier": [

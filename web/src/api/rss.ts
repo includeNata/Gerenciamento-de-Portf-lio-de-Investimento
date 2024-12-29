@@ -9,7 +9,6 @@ export default async function handler(req, res) {
 
   try {
     const feed = await parser.parseURL("/proxy/rss");
-    console.log(feed);
     const items = feed.items.map((item) => {
       return {
         title: item.title,

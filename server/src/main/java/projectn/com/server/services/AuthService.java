@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import projectn.com.server.DTO.LoginDTO;
 import projectn.com.server.security.JwtTokenProvider;
 
+import java.util.UUID;
+
 @Service
 public class AuthService {
 
@@ -17,6 +19,8 @@ public class AuthService {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private TokenService tokenService;
 
 
     public String login(LoginDTO loginDTO) {
@@ -25,10 +29,8 @@ public class AuthService {
                 loginDTO.email(),
                 loginDTO.password()
         ));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        tokenService.generateToken(loginDTO);
 
-        String token = jwtTokenProvider.generateToken(authentication);
-
-        return token;
+        return "";
     }
 }

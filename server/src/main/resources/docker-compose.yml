@@ -1,9 +1,18 @@
 services:
   redis:
     image: redis
+    container_name: redis_container
     ports:
       - 6379:6379
 
+
+  application:
+    build:
+      context: ../../../../scraping
+      dockerfile: Dockerfile
+    container_name: scraping
+    depends_on:
+      - redis
   db:
     image: mysql:8.0
     container_name: db_container

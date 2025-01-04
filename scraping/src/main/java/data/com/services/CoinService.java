@@ -2,77 +2,76 @@ package data.com.services;
 
 import com.google.gson.Gson;
 import data.com.entities.Coin;
+import data.com.entities.Fii;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class CoinService {
 
 
-    private static final Logger log = LoggerFactory.getLogger(CoinService.class);
+    private static final Logger log = Logger.getLogger(CoinService.class.getName());
     private static final String URL = "https://coinmarketcap.com";
     private Coin coin;
-    private List<Coin> coins =  Collections.synchronizedList(new ArrayList<>());
+    CopyOnWriteArrayList<Coin> coins = new CopyOnWriteArrayList<>();
+    private Gson gson = new Gson();
+    private Jedis jedis;
 
-
+    public CoinService(Jedis jedis) {
+        this.jedis = jedis;
+    }
 
     public List<Coin> getCoins(){
         String xpathCoin = "//*[@id=\"__next\"]/div[2]/div[1]/div[2]/div/div[1]/div[5]/table/tbody/tr[#]/td[3]/a";
         String first10 = "//*[@id=\"__next\"]/div[2]/div[1]/div[2]/div/div[1]/div[5]/table/tbody/tr[#]/td[3]/div/a";
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(3);
         try {
             long timestamp = System.currentTimeMillis();
             Document doc = Jsoup.connect(URL+"?timestamp="+ timestamp).get();
 
             executor.submit(()->{
                 String aux = first10;
-                for(int i =1;i<10;i++){
-                    aux = aux.replace("#",i+"");
-                    coin = getInformation(doc.selectXpath(aux).attr("href"));
-                    coins.add(coin);
-                    aux = first10;
-                }
-            });
+                for(int i =1;i<=100;i++){
+                    if(i <=10){
+                        aux = aux.replace("#",i+"");
+                        coin = getInformation(doc.selectXpath(aux).attr("href"));
+                        coins.add(coin);
+                        aux = first10;
 
-            executor.submit(()-> {
-                String aux = xpathCoin;
-                for(int i =10 ;i<55;i++){
-                    aux = aux.replace("#",i+"");
-                    coin = getInformation(doc.selectXpath(aux).attr("href"));
-                    coins.add(coin);
-                    aux = xpathCoin;
-                }
-            });
-            executor.submit(()->{
-                String aux = xpathCoin;
-                for(int i =55 ;i <=100;i++){
-                    aux = aux.replace("#",i+"");
-                    coin = getInformation(doc.selectXpath(aux).attr("href"));
-                    coins.add(coin);
-                    aux = xpathCoin;
+                    }
+                    else{
+                        aux = xpathCoin;
+                        aux = aux.replace("#",i+"");
+                        coin = getInformation(doc.selectXpath(aux).attr("href"));
+                        coins.add(coin);
+                        aux = xpathCoin;
+                    }
                 }
             });
 
             executor.shutdown();
-            executor.awaitTermination(10, TimeUnit.SECONDS);
+            while (!executor.isTerminated()) {
+            }
+
 
         }catch (IOException e){
-            log.error(e.getMessage());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            log.warning(e.getMessage());
         }
         return coins;
     }
+
+
     public Coin getInformation(String name){
         String url = "https://coinmarketcap.com"+name;
 
@@ -90,7 +89,7 @@ public class CoinService {
             price = price.replace(",",".");
             coin.setPrice(Double.parseDouble(price));
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.warning(e.getMessage());
         }
 
         return coin;
@@ -110,4 +109,14 @@ public class CoinService {
         return result.toString();
     }
 
+
+    public  void addDataRedis(){
+        List<Coin> coinList = getCoins();
+        if(jedis.exists("coins"))
+            jedis.del("coins");
+        for(Coin coin : coinList){
+            jedis.lpush("coins", gson.toJson(coin));
+        }
+        log.info("Add coins in redis");
+    }
 }

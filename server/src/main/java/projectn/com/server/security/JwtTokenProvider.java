@@ -14,7 +14,7 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private static final String SECRET = "daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb";
-    private static final long jwtExpirationDate = 60480000000L;
+    private static final long jwtExpirationDate = 6048000000L;
 
 
     public String generateToken(Authentication authentication) {

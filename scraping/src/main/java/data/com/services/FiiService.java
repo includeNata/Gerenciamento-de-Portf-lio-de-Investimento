@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class FiiService {
 
@@ -19,7 +20,7 @@ public class FiiService {
 
     private Jedis jedis;
     private Gson gson = new Gson();
-
+    private static final Logger log = Logger.getLogger(FiiService.class.getName());
 
     public FiiService(Jedis jedis) {
         this.jedis = jedis;
@@ -94,7 +95,7 @@ public class FiiService {
            for (Fii fii : list) {
                jedis.lpush("fiis", gson.toJson(fii));
            }
-       System.out.println("Done");
+       log.info("Add fii in redis");
     }
 
 }

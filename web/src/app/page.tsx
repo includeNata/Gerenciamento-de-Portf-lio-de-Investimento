@@ -3,14 +3,26 @@ import { DollarSign, Medal, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { getListCrypto } from "@/api/getListCryptos";
 import handler from "@/api/rss";
 import RankingCard from "@/components/RankingCard/RankingCard";
 import Title from "@/components/Title/Title";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { useQueryHook } from "@/hook/useQueryHook";
 
 export default function Home() {
   const [items, setItems] = useState([]);
+  const { data: dataListCrypto } = useQueryHook({
+    queryKey: ["query-list-crypto"],
+    staleTime: 3000,
+    options: {
+      queryFn: getListCrypto,
+    },
+    onError(err) {
+      console.log(err);
+    },
+  });
 
   useEffect(() => {
     (async () => {
@@ -18,6 +30,8 @@ export default function Home() {
       setItems(response);
     })();
   }, []);
+
+  console.log(dataListCrypto);
 
   return (
     <div className="flex flex-col gap-16">

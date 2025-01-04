@@ -1,15 +1,17 @@
 import { twMerge } from "tailwind-merge";
 
-import RankingCardItem from "./RankingCardItem/RankingCardItem";
+import RankingCardItemCrypto from "./RankingCardItemCrypto/RankingCardItemCrypto";
+import RankingCardItemStock from "./RankingCardItemStock/RankingCardItemStock";
 
 interface RankingCardProps {
   title: string;
   data: unknown[];
   onViewAll: () => void;
   styleRankingCard?: string;
+  rankingCard: string;
 }
 
-export default function RankingCard({ title, data, onViewAll, styleRankingCard }: RankingCardProps) {
+export default function RankingCard({ title, data, onViewAll, styleRankingCard, rankingCard }: RankingCardProps) {
   function formatMarketCap(value) {
     if (value >= 1e12) {
       return `${(value / 1e12).toFixed(2)}T`;
@@ -36,7 +38,13 @@ export default function RankingCard({ title, data, onViewAll, styleRankingCard }
 
       <ul className="space-y-4 overflow-y-auto">
         {data.map((item, index) => (
-          <RankingCardItem item={item} formatMarketCap={formatMarketCap} index={index} key={index} />
+          <>
+            {rankingCard === "stock" ? (
+              <RankingCardItemStock item={item} formatMarketCap={formatMarketCap} index={index} key={index} />
+            ) : (
+              <RankingCardItemCrypto item={item} formatMarketCap={formatMarketCap} index={index} key={index} />
+            )}
+          </>
         ))}
       </ul>
     </div>

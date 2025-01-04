@@ -1,5 +1,5 @@
 "use client";
-import { Medal, Search } from "lucide-react";
+import { DollarSign, Medal, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-16">
-      <header className="fixed top-0 z-10 flex w-full items-center justify-between border-b border-b-[#9265E2] px-8 py-2">
+      <header className="fixed top-0 z-10 flex w-full items-center justify-between border-b border-b-[#9265E2] bg-white px-8 py-2">
         <div className="h-6 w-6 rounded-full bg-gray-600"></div>
 
         <ul className="flex gap-11">
@@ -132,6 +132,7 @@ export default function Home() {
             ]}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-[30%]"
+            rankingCard="stock"
           />
           <RankingCard
             title="New Rankings"
@@ -183,6 +184,7 @@ export default function Home() {
             ]}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-[30%]"
+            rankingCard="stock"
           />
           <RankingCard
             title="New Rankings"
@@ -234,6 +236,173 @@ export default function Home() {
             ]}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-[30%]"
+            rankingCard="stock"
+          />
+        </div>
+      </section>
+
+      <section className="flex h-auto w-11/12 flex-col gap-3 px-16">
+        <Title name="Rankings de Criptos" icon={<DollarSign size={20} />} />
+        <div className="flex h-full w-full flex-wrap items-start justify-start gap-3">
+          <div className="flex w-full items-center justify-between">
+            <RankingCard
+              title="Cryptos em Alta"
+              data={[
+                {
+                  stock: "HAPV3",
+                  name: "HAPVIDA",
+                  close: 2.21,
+                  change: -0.896860986547086,
+                  volume: 27813000,
+                  market_cap: 16801583439.999998,
+                  logo: "https://s3-symbol-logo.tradingview.com/hapvida--big.svg",
+                  sector: "Health Services",
+                  type: "stock",
+                },
+                {
+                  stock: "CVCB3",
+                  name: "CVC BRASIL",
+                  close: 1.41,
+                  change: -1.3986013986014,
+                  volume: 27179800,
+                  market_cap: 751583213,
+                  logo: "https://s3-symbol-logo.tradingview.com/cvc-brasil-on-nm--big.svg",
+                  sector: "Consumer Services",
+                  type: "stock",
+                },
+                {
+                  stock: "MGLU3",
+                  name: "MAGAZINE LUIZA",
+                  close: 6.38,
+                  change: -2.297090352220526,
+                  volume: 24666900,
+                  market_cap: 4361457925,
+                  logo: "https://s3-symbol-logo.tradingview.com/magaz-luiza-on-nm--big.svg",
+                  sector: "Retail Trade",
+                  type: "stock",
+                },
+                {
+                  stock: "B3SA3",
+                  name: "B3",
+                  close: 10.36,
+                  change: 0.2904162633107392,
+                  volume: 23844500,
+                  market_cap: 54113633985,
+                  logo: "https://s3-symbol-logo.tradingview.com/b3-on-nm--big.svg",
+                  sector: "Finance",
+                  type: "stock",
+                },
+              ]}
+              onViewAll={() => console.log("Clicked!")}
+              styleRankingCard="w-[65%]"
+              rankingCard="crypto"
+            />
+
+            <RankingCard
+              title="Crypto Mais Visitados"
+              data={[
+                {
+                  stock: "HAPV3",
+                  name: "HAPVIDA",
+                  close: 2.21,
+                  change: -0.896860986547086,
+                  volume: 27813000,
+                  market_cap: 16801583439.999998,
+                  logo: "https://s3-symbol-logo.tradingview.com/hapvida--big.svg",
+                  sector: "Health Services",
+                  type: "stock",
+                },
+                {
+                  stock: "CVCB3",
+                  name: "CVC BRASIL",
+                  close: 1.41,
+                  change: -1.3986013986014,
+                  volume: 27179800,
+                  market_cap: 751583213,
+                  logo: "https://s3-symbol-logo.tradingview.com/cvc-brasil-on-nm--big.svg",
+                  sector: "Consumer Services",
+                  type: "stock",
+                },
+                {
+                  stock: "MGLU3",
+                  name: "MAGAZINE LUIZA",
+                  close: 6.38,
+                  change: -2.297090352220526,
+                  volume: 24666900,
+                  market_cap: 4361457925,
+                  logo: "https://s3-symbol-logo.tradingview.com/magaz-luiza-on-nm--big.svg",
+                  sector: "Retail Trade",
+                  type: "stock",
+                },
+                {
+                  stock: "B3SA3",
+                  name: "B3",
+                  close: 10.36,
+                  change: 0.2904162633107392,
+                  volume: 23844500,
+                  market_cap: 54113633985,
+                  logo: "https://s3-symbol-logo.tradingview.com/b3-on-nm--big.svg",
+                  sector: "Finance",
+                  type: "stock",
+                },
+              ]}
+              onViewAll={() => console.log("Clicked!")}
+              styleRankingCard="w-[30%]"
+              rankingCard="crypto"
+            />
+          </div>
+
+          <RankingCard
+            title="Crypto Mais Visitados"
+            data={[
+              {
+                stock: "HAPV3",
+                name: "HAPVIDA",
+                close: 2.21,
+                change: -0.896860986547086,
+                volume: 27813000,
+                market_cap: 16801583439.999998,
+                logo: "https://s3-symbol-logo.tradingview.com/hapvida--big.svg",
+                sector: "Health Services",
+                type: "stock",
+              },
+              {
+                stock: "CVCB3",
+                name: "CVC BRASIL",
+                close: 1.41,
+                change: -1.3986013986014,
+                volume: 27179800,
+                market_cap: 751583213,
+                logo: "https://s3-symbol-logo.tradingview.com/cvc-brasil-on-nm--big.svg",
+                sector: "Consumer Services",
+                type: "stock",
+              },
+              {
+                stock: "MGLU3",
+                name: "MAGAZINE LUIZA",
+                close: 6.38,
+                change: -2.297090352220526,
+                volume: 24666900,
+                market_cap: 4361457925,
+                logo: "https://s3-symbol-logo.tradingview.com/magaz-luiza-on-nm--big.svg",
+                sector: "Retail Trade",
+                type: "stock",
+              },
+              {
+                stock: "B3SA3",
+                name: "B3",
+                close: 10.36,
+                change: 0.2904162633107392,
+                volume: 23844500,
+                market_cap: 54113633985,
+                logo: "https://s3-symbol-logo.tradingview.com/b3-on-nm--big.svg",
+                sector: "Finance",
+                type: "stock",
+              },
+            ]}
+            onViewAll={() => console.log("Clicked!")}
+            styleRankingCard="w-full"
+            rankingCard="crypto"
           />
         </div>
       </section>

@@ -1,42 +1,39 @@
 "use client";
 import { ArrowDownLeft, ArrowUpRight, Building2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { getLogo } from "@/api/getLogo";
-import { useMutationHook } from "@/hook/useMutationHook";
+import { useQueryHook } from "@/hook/useQueryHook";
 import { logoNameMapping } from "@/util/logoNameMapping";
 
-interface RankingCardItemProps {
+interface RankingCardItemStockProps {
   item: unknown;
   formatMarketCap: () => string;
   index: number;
 }
 
-export default function RankingCardItem({ item, formatMarketCap, index }: RankingCardItemProps) {
-  const [img, setImage] = useState<string | undefined>("/path-to-placeholder-image");
+export default function RankingCardItemStock({ item, formatMarketCap, index }: RankingCardItemStockProps) {
+  const [img, setImage] = useState<string | [] | undefined>("/path-to-placeholder-image");
 
-  const { mutateAsync, isLoading } = useMutationHook({
-    mutationFn: getLogo,
-    mutationKey: ["query-logo", item.name],
-    gcTime: Infinity,
+  const { isLoading } = useQueryHook({
+    queryKey: ["query-logo", item.name],
     options: {
-      onMutate: (variables) => {
-        console.log(variables);
-      },
+      queryFn: () => getLogo({ name: logoNameMapping[item.name] || item.name.split(" ")[0] }),
       onSuccess: (data) => {
+        console.log(data);
         if (data && data[0]?.icon) {
           setImage(data[0].icon);
+        } else {
+          setImage(data);
         }
       },
+      onError: (err) => {
+        console.error("Error fetching logo:", err);
+      },
+      staleTime: Infinity,
+      cacheTime: Infinity,
     },
   });
-
-  useEffect(() => {
-    if (item.name) {
-      console.log(logoNameMapping[item.name]);
-      mutateAsync({ name: logoNameMapping[item.name] || item.name.split(" ")[0] });
-    }
-  }, [item.name, mutateAsync]);
 
   return (
     <li

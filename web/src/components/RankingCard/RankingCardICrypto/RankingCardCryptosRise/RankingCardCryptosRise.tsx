@@ -26,7 +26,6 @@ export default function RankingCardCryptosRise({
         </button>
       </header>
 
-      {console.log(data?.sort((item1, item2) => item2.price - item1.price))}
       <ul className="flex w-full items-center justify-between gap-10 overflow-auto">
         {data &&
           data

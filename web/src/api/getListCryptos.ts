@@ -5,5 +5,5 @@ export async function getListCrypto() {
     withCredentials: false,
   });
 
-  return response;
+  return response.data;
 }

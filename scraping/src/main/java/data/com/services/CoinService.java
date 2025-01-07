@@ -9,9 +9,12 @@ import org.jsoup.nodes.Document;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -74,7 +77,15 @@ public class CoinService {
 
     public Coin getInformation(String name){
         String url = "https://coinmarketcap.com"+name;
-
+        String fdvXpath = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[3]/div/dd/div/div/div/span";
+        String marketCapXpath = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[1]/div/dd/div/div[1]/div/span";
+        String circulatingSupplyXpath = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[7]/div/dd/div/div[1]/span";
+        String marketCapVolumeXpath = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[4]/div/dd/div/div";
+        String marketCapXpathColor = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[1]/div/dd/div/div[2]/p";
+        String volumeXpath = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[2]/div/dd/div/div[1]/div/span";
+        String volumePercentage = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[2]/div/dd/div/div[2]/p";
+        String volumeColor = "//*[@id=\"section-coin-stats\"]/div/div/dl/div[2]/div/dd/div/div[2]/p";
+        String aux ="-";
         Coin coin = new Coin();
         coin.setName(formatName(name));
         try {
@@ -83,15 +94,34 @@ public class CoinService {
                     .get();
             coin.setImage(doc.head().select("meta[property=og:image]").attr("content"));
             String price = doc.selectXpath("/html/body/div[1]/div[2]/div/div[2]/div/div/div[1]/div/section/div/div[2]/span").text();
+            NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
+            Number number = format.parse(price);
+            if(doc.selectXpath(volumeColor).attr("color").equals("red")){
+                aux = aux.concat(doc.selectXpath(volumePercentage).text());
+                coin.setVolumePercentage(aux);
+                coin.setVolume(doc.selectXpath(volumeXpath).text());
+            }
+            else {
+                coin.setVolumePercentage(doc.selectXpath(volumePercentage).text());
+                coin.setVolume(doc.selectXpath(volumeXpath).text());
+            }
+            aux = "-";
+            if(doc.selectXpath(marketCapXpathColor).attr("color").equals("red")){
+                aux = aux.concat(doc.selectXpath(marketCapXpathColor).text());
+                coin.setMarketCapPercentage(aux);
+                coin.setMarketCap(doc.selectXpath(marketCapXpath).text());
+            }else{
+                coin.setMarketCap(doc.selectXpath(marketCapXpath).text());
+                coin.setMarketCapPercentage(doc.selectXpath(marketCapXpathColor).text());
+            }
 
-            price = price.replace("$","");
-            price = price.replace(".","");
-            price = price.replace(",",".");
-            coin.setPrice(Double.parseDouble(price));
-        } catch (IOException e) {
+            coin.setVolumeMarketCap(doc.selectXpath(marketCapVolumeXpath).text());
+            coin.setCirculatingSupply(doc.selectXpath(circulatingSupplyXpath).text());
+            coin.setFDV(doc.selectXpath(fdvXpath).text());
+            coin.setPrice(number.doubleValue());
+        } catch (IOException | ParseException e) {
             log.warning(e.getMessage());
         }
-
         return coin;
     }
 

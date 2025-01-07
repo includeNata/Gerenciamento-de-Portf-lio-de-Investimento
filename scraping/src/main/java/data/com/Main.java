@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Jedis jedis = new Jedis("redis_container", 6379);
         CoinService coinService = new CoinService(jedis);
+
         FiiService fiiService = new FiiService(jedis);
         while(true){
             try{

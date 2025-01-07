@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize)->{
                     authorize.requestMatchers(HttpMethod.POST,"/login").permitAll();
                     authorize.requestMatchers(HttpMethod.GET,"/fiis").permitAll();
-                    authorize.requestMatchers(HttpMethod.GET,"/coins").permitAll();
+                    authorize.requestMatchers(HttpMethod.GET,"/coins/**").permitAll();
                     authorize.requestMatchers(HttpMethod.POST,"/users").permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();

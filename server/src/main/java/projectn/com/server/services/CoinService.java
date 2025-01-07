@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import projectn.com.server.entities.Coin;
 import projectn.com.server.entities.Fii;
+import projectn.com.server.services.exceptions.ResourceNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,21 @@ public class CoinService {
     private RedisTemplate<String, String> redisTemplate;
 
     public List<Coin> findAll(){
+        return  convertList();
+    }
+
+    public Coin findByName(String name){
+        List<Coin> coins = convertList();
+
+        for(Coin coin : coins){
+            if(coin.getName().equals(name.toUpperCase())){
+                return coin;
+            }
+        }
+        throw new ResourceNotFoundException("Not found "+name);
+    }
+
+    public List<Coin> convertList(){
         List<String>  list = redisTemplate.opsForList().range("coins",0,-1);
         List<Coin> coins = new ArrayList<>();
         for(String s : list){

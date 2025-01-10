@@ -1,18 +1,20 @@
 "use client";
-import { DollarSign, Medal, Search } from "lucide-react";
+import { DollarSign, Globe, MapPinHouse, Medal, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { getListCrypto } from "@/api/getListCryptos";
 import handler from "@/api/rss";
+import { Footer } from "@/components/Footer/Footer";
 import RankingCard from "@/components/RankingCard/RankingCard";
+import RankingCardFiis from "@/components/RankingCard/RankingCardFB/RankingCardFiis/RankingCardFiis";
+import RankingCardCryptoMoreVisited from "@/components/RankingCard/RankingCardICrypto/RankingCardCryptoMoreVisited/RankingCardCryptoMoreVisited";
 import RankingCardCryptosRise from "@/components/RankingCard/RankingCardICrypto/RankingCardCryptosRise/RankingCardCryptosRise";
 import RankingCardICrypto from "@/components/RankingCard/RankingCardICrypto/RankingCardICrypto";
 import Title from "@/components/Title/Title";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { useQueryHook } from "@/hook/useQueryHook";
-import RankingCardCryptoMoreVisited from "@/components/RankingCard/RankingCardICrypto/RankingCardCryptoMoreVisited/RankingCardCryptoMoreVisited";
 
 export default function Home() {
   const [items, setItems] = useState([]);
@@ -147,7 +149,6 @@ export default function Home() {
             ]}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-[30%]"
-            rankingCard="stock"
           />
           <RankingCard
             title="New Rankings"
@@ -199,7 +200,6 @@ export default function Home() {
             ]}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-[30%]"
-            rankingCard="stock"
           />
           <RankingCard
             title="New Rankings"
@@ -251,7 +251,6 @@ export default function Home() {
             ]}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-[30%]"
-            rankingCard="stock"
           />
         </div>
       </section>
@@ -286,6 +285,37 @@ export default function Home() {
           />
         </div>
       </section>
+
+      <div className="flex h-full w-11/12 items-start justify-between px-16">
+        <section className="flex h-full w-[60%] flex-wrap items-start justify-start gap-3">
+          <Title name="Rankings de FIIs" icon={<MapPinHouse size={20} />} />
+          <div className="flex h-full w-full flex-wrap items-start justify-start gap-3">
+            <div className="flex w-full items-center justify-between">
+              <RankingCardFiis
+                title="FIIs Markets"
+                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
+                onViewAll={() => console.log("Clicked!")}
+                rankingCard="fiis"
+              />
+            </div>
+          </div>
+        </section>
+        <section className="flex h-full w-[35%] flex-wrap items-start justify-start gap-3">
+          <Title name="Rankings de BDRs" icon={<Globe size={20} />} />
+          <div className="flex h-full w-full flex-wrap items-start justify-start gap-3">
+            <div className="flex w-full items-center justify-between">
+              <RankingCardFiis
+                title="BDRs Mais Visitados"
+                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
+                onViewAll={() => console.log("Clicked!")}
+                rankingCard="fiis"
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <Footer />
     </div>
   );
 }

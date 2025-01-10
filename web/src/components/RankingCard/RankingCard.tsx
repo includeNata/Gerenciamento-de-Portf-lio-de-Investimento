@@ -7,10 +7,9 @@ interface RankingCardProps {
   data: unknown[];
   onViewAll: () => void;
   styleRankingCard?: string;
-  rankingCard: string;
 }
 
-export default function RankingCard({ title, data, onViewAll, styleRankingCard, rankingCard }: RankingCardProps) {
+export default function RankingCard({ title, data, onViewAll, styleRankingCard }: RankingCardProps) {
   function formatMarketCap(value) {
     if (value >= 1e12) {
       return `${(value / 1e12).toFixed(2)}T`;

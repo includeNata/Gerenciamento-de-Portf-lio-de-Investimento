@@ -1,10 +1,11 @@
 import { twMerge } from "tailwind-merge";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ListCryptoModel } from "@/models/ListCryptoModel";
 
 interface RankingCardCryptoMoreVisitedProps {
   title: string;
-  data: unknown[];
+  data?: ListCryptoModel[];
   onViewAll: () => void;
   styleRankingCard?: string;
 }
@@ -30,8 +31,12 @@ export default function RankingCardCryptoMoreVisited({
       <Table className="w-full overflow-auto">
         <TableHeader>
           <TableRow className="border-b-[#F2F2F2]">
-            <TableHead className="w-full">Nome</TableHead>
-            <TableHead className="w-full">Preço</TableHead>
+            <TableHead>Nome</TableHead>
+            <TableHead>Cap. de Mercado</TableHead>
+            <TableHead>Volume</TableHead>
+            <TableHead>Fornecimento total</TableHead>
+            <TableHead>FDV</TableHead>
+            <TableHead>Preço</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -40,16 +45,45 @@ export default function RankingCardCryptoMoreVisited({
               .filter((item, index, self) => index === self.findIndex((t) => t.name === item.name))
               .sort((item1, item2) => item2.price - item1.price)
               .filter((_, index) => index < 3)
-              .map((item, index) => (
+              .map((item: ListCryptoModel, index) => (
                 <TableRow className="border-b-[#F2F2F2]" key={index}>
-                  <TableCell className="flex h-full items-center justify-start gap-2">
-                    <img src={item.image} alt="" className="h-8 w-8" />
-                    <div className="flex h-full flex-col justify-between py-2">
-                      <span className="text-[9px] text-black/60">Proof of Stake</span>
-                      <h2 className="text-[10px]">{item.name}</h2>
+                  <TableCell>
+                    <div className="flex h-full items-center justify-start gap-2">
+                      <img src={item.image} alt="" className="h-8 w-8" />
+                      <div className="flex h-full flex-col justify-between py-2">
+                        <span className="text-[9px] text-black/60">Proof of Stake</span>
+                        <h2 className="text-[10px]">{item.name}</h2>
+                      </div>
                     </div>
                   </TableCell>
 
+                  <TableCell>
+                    <div className="flex flex-col justify-center">
+                      <span>{item.marketCap}</span>
+                      <span
+                        className={`text-[10px] ${item.marketCapPercentage.split("-")[0] > 0 ? "text-green-500" : "text-red-500"}`}
+                      >
+                        {item.marketCapPercentage}
+                      </span>
+                    </div>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className="flex w-fit flex-col items-end">
+                      <span>{item.volume}</span>
+                      <span
+                        className={`text-[10px] ${item.volumePercentage.split("-")[0] > 0 ? "text-green-500" : "text-red-500"}`}
+                      >
+                        {item.volumePercentage}
+                      </span>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="">
+                    <span className="">{item.circulatingSupply}</span>
+                  </TableCell>
+
+                  <TableCell>{item.fdv}</TableCell>
                   <TableCell>${item.price.toFixed(2)}</TableCell>
                 </TableRow>
               ))}

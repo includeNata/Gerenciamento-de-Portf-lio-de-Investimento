@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { Poppins } from "next/font/google";
 
+import Header from "@/components/Header/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TanstackProvider } from "@/provider/tanstack-provider";
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <Header />
           <TanstackProvider>{children}</TanstackProvider>
         </ThemeProvider>
       </body>

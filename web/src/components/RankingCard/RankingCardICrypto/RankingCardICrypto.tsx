@@ -23,7 +23,7 @@ export default function RankingCardICrypto({ title, data, onViewAll, styleRankin
       </header>
 
       <ul className="space-y-4 overflow-y-auto">
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <RankingCardItemCrypto item={item} index={index} key={`ranking-cark-crypto-${index}`} />
         ))}
       </ul>

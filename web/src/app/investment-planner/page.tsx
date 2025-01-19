@@ -5,6 +5,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { Slider } from "@/components/ui/slider";
 import { Table, TableBody, TableHeader } from "@/components/ui/table";
 
+import CalcCompoundInterest from "./CalcCompoundInterest/CalcCompoundInterest";
 import PopoverAddConfig from "./PopoverAddConfig/PopoverAddConfig";
 
 export default function InvestmentPlanner() {
@@ -20,8 +21,6 @@ export default function InvestmentPlanner() {
   const totalPercentage = dataInfos.reduce((acc, entry) => acc + entry.value, 0);
 
   const totalValue = dataInfos.reduce((acc, entry) => acc + (investmentValue * entry.value) / 100, 0);
-
-  console.log(dataInfos);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start px-16 dark:bg-gray-900 dark:text-white">
@@ -135,6 +134,8 @@ export default function InvestmentPlanner() {
           </button>
         </div>
       </main>
+
+      <CalcCompoundInterest />
     </div>
   );
 

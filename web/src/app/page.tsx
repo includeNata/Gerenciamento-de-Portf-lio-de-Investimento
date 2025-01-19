@@ -36,11 +36,11 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-16">
-      <main className="flex h-[calc(65vh-_53px)] w-full flex-col items-start justify-end gap-20 px-16">
+      <main className="relative flex h-[calc(65vh-_53px)] w-full flex-col items-start justify-end gap-20 px-16">
         <Image
           src="/Group 15.png"
           alt=""
-          className="left-[auto!important] right-[0%!important] z-0 h-[90%!important] w-[50%!important]"
+          className="left-[auto!important] right-[0%!important] z-0 h-[42.25rem!important] w-[40.625rem!important]"
           fill
         />
 

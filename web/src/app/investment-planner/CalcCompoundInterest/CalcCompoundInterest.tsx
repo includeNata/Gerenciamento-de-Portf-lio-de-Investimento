@@ -3,12 +3,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import * as Yup from "yup";
 
+import InputForm from "@/components/InputForm/InputForm";
 import { Button } from "@/components/ui/button";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
@@ -47,32 +47,51 @@ export default function CalcCompoundInterest() {
       months: 12,
     },
   });
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("month");
   const [valuesInterest, setValuesInterest] = useState<number[]>([]);
+  const [monthlyData, setMonthlyData] = useState<{ month: number; totalAmount: number; accumulatedInterest: number }[]>(
+    [],
+  );
 
   function submit(e: SchemaDataType) {
     const { valueInitial, valueMonthly, interestRate, months } = e;
 
     let totalAmount = 0;
+    let accumulatedInterest = 0;
 
     const monthRate = interestRate / 100 / 12;
     const monthsLoop = value === "month" ? months : months * 12;
 
-    let amountFromInitial = 0;
-    let amountFromMonthlyContributions = amountFromInitial;
+    let amountFromInitial = valueInitial;
+    let amountFromMonthlyContributions = valueInitial;
     let calcRateMonthAccumulate = 0;
-    console.log(monthsLoop);
 
-    for (let i = 1; i < monthsLoop + 1; i++) {
-      amountFromInitial = valueMonthly + amountFromInitial;
+    const monthlyInterestData = [];
+
+    for (let i = 1; i <= monthsLoop; i++) {
+      amountFromInitial += valueMonthly;
       const calcRateMonth = amountFromMonthlyContributions * monthRate;
       calcRateMonthAccumulate += calcRateMonth;
       amountFromMonthlyContributions = amountFromInitial + calcRateMonthAccumulate;
+
+      totalAmount = amountFromMonthlyContributions.toFixed(2);
+      accumulatedInterest = calcRateMonthAccumulate.toFixed(2);
+
+      monthlyInterestData.push({
+        month: i,
+        totalAmount: amountFromInitial,
+        accumulatedInterest: Number(accumulatedInterest),
+      });
     }
 
-    totalAmount = amountFromMonthlyContributions + valueInitial;
-    setValuesInterest([totalAmount, calcRateMonthAccumulate, valueMonthly * monthsLoop + valueInitial]);
+    setMonthlyData(monthlyInterestData);
+    setValuesInterest([
+      Number(totalAmount),
+      Number(accumulatedInterest),
+      Number(valueMonthly * monthsLoop + valueInitial),
+    ]);
   }
 
   return (
@@ -83,76 +102,48 @@ export default function CalcCompoundInterest() {
       <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">Calculadora de Juros Compostos</h2>
 
       <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="flex flex-col items-start gap-2">
-          <Label htmlFor="valor-inicial" className="text-sm font-medium text-gray-600 dark:text-gray-300">
-            Valor Inicial:
-          </Label>
-          <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800">
-            <span className="flex items-center justify-center bg-zinc-300 px-4 py-2 text-sm text-gray-700 dark:bg-gray-600 dark:text-gray-100">
-              R$
-            </span>
-            <Input
-              id="valor-inicial"
-              {...register("valueInitial")}
-              type="number"
-              placeholder="0,00"
-              className="h-full w-full rounded-r-lg border-none bg-transparent px-4 py-2 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus-visible:ring-0 dark:text-white"
-            />
-          </div>
-          {errors.valueInitial && <span className="text-red-500">{errors.valueInitial.message}</span>}
-        </div>
+        <InputForm
+          errors={errors}
+          register={register}
+          spanText="R$"
+          title="Valor inicial"
+          type="number"
+          placeholder="0,00"
+          htmlFor="valor-inicial"
+          name="valueInitial"
+        />
 
-        <div className="flex flex-col items-start gap-2">
-          <Label htmlFor="valor-mensal" className="text-sm font-medium text-gray-600 dark:text-gray-300">
-            Valor Mensal:
-          </Label>
-          <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800">
-            <span className="flex items-center justify-center bg-zinc-300 px-4 py-2 text-sm text-gray-700 dark:bg-gray-600 dark:text-gray-100">
-              R$
-            </span>
-            <Input
-              id="valor-mensal"
-              {...register("valueMonthly")}
-              type="number"
-              placeholder="0,00"
-              className="h-full w-full rounded-r-lg border-none bg-transparent px-4 py-2 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus-visible:ring-0 dark:text-white"
-            />
-          </div>
-          {errors.valueMonthly && <span className="text-red-500">{errors.valueMonthly.message}</span>}
-        </div>
+        <InputForm
+          errors={errors}
+          register={register}
+          spanText="R$"
+          title="Contribuição mensal"
+          type="number"
+          placeholder="0,00"
+          htmlFor="contribuicao-mensal"
+          name="valueMonthly"
+        />
 
-        <div className="flex flex-col items-start gap-2">
-          <Label htmlFor="taxa-juros" className="text-sm font-medium text-gray-600 dark:text-gray-300">
-            Taxa de Juros (%):
-          </Label>
-          <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800">
-            <span className="flex items-center justify-center bg-zinc-300 px-4 py-2 text-sm text-gray-700 dark:bg-gray-600 dark:text-gray-100">
-              %
-            </span>
-            <Input
-              id="taxa-juros"
-              {...register("interestRate")}
-              type="number"
-              placeholder="0,00"
-              className="h-full w-full rounded-r-lg border-none bg-transparent px-4 py-2 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus-visible:ring-0 dark:text-white"
-            />
-          </div>
-          {errors.interestRate && <span className="text-red-500">{errors.interestRate.message}</span>}
-        </div>
+        <InputForm
+          errors={errors}
+          register={register}
+          spanText="%"
+          title="Taxa de Juros (%):"
+          type="number"
+          placeholder="0,00"
+          htmlFor="taxa-juros"
+          name="interestRate"
+        />
 
-        <div className="flex flex-col items-start gap-2">
-          <Label htmlFor="tempo" className="text-sm font-medium text-gray-600 dark:text-gray-300">
-            Tempo (Meses):
-          </Label>
-          <div className="flex w-full items-center overflow-hidden rounded-lg border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800">
-            <Input
-              id="tempo"
-              {...register("months")}
-              type="number"
-              placeholder="12"
-              className="h-full w-full rounded-r-lg border-none bg-transparent px-4 py-2 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus-visible:ring-0 dark:text-white"
-            />
-
+        <InputForm
+          errors={errors}
+          register={register}
+          title="Quantidade de meses"
+          type="number"
+          placeholder="0"
+          htmlFor="quantidade-meses"
+          name="months"
+          options={
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button
@@ -187,9 +178,8 @@ export default function CalcCompoundInterest() {
                 </Command>
               </PopoverContent>
             </Popover>
-          </div>
-          {errors.months && <span className="text-red-500">{errors.months.message}</span>}
-        </div>
+          }
+        />
       </div>
 
       <div className="mt-6 flex w-full justify-end gap-4">
@@ -230,6 +220,85 @@ export default function CalcCompoundInterest() {
               })}
             </span>
           </div>
+        </div>
+      )}
+
+      {monthlyData.length > 0 && (
+        <div className="mt-8 w-full">
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-white">Tabela de Juros Mensais</h3>
+          <div className="h-[25.125rem] overflow-auto">
+            <table className="mt-4 w-full table-auto border-collapse dark:text-white">
+              <thead className="sticky top-0 bg-white dark:bg-gray-800">
+                <tr className="border-b">
+                  <th className="px-4 py-2 text-left">Mês</th>
+                  <th className="px-4 py-2 text-left">Total Investido (R$)</th>
+                  <th className="px-4 py-2 text-left">Juros Acumulados (R$)</th>
+                  <th className="px-4 py-2 text-left">Total Acumulados (R$)</th>
+                </tr>
+              </thead>
+              <tbody className="">
+                {monthlyData.map((data, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="px-4 py-2">{data.month}</td>
+                    <td className="px-4 py-2">
+                      {data.totalAmount.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+                    <td className="px-4 py-2">
+                      {data.accumulatedInterest.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+                    <td className="px-4 py-2">
+                      {(data.totalAmount + data.accumulatedInterest).toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {monthlyData.length > 0 && (
+        <div className="mt-8 flex w-full flex-col gap-6">
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-white">Gráfico de Juros Compostos</h3>
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={monthlyData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(0, 0, 0, 0.7)",
+                  borderRadius: "8px",
+                  padding: "10px",
+                }}
+                labelFormatter={(label) => `Mês ${label}`}
+                formatter={(value) =>
+                  value.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })
+                }
+              />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="totalAmount"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+                name="Total Investido"
+              />
+              <Line type="monotone" dataKey="accumulatedInterest" stroke="#82ca9d" name="Juros Acumulados" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       )}
     </form>

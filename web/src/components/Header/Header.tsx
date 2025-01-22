@@ -3,7 +3,7 @@ import { ModeToggle } from "../ui/mode-toggle";
 
 export default function Header() {
   return (
-    <header className="fixed top-0 z-10 flex w-full items-center justify-between border-b border-b-[#9265E2] bg-white px-8 py-2 dark:border-b-[#9265E2]/70 dark:bg-gray-900">
+    <header className="sticky top-0 z-10 flex w-full items-center justify-between border-b border-b-[#9265E2] bg-white px-8 py-2 dark:border-b-[#9265E2]/70 dark:bg-gray-900">
       <div className="h-6 w-6 rounded-full bg-gray-600"></div>
 
       <ul className="flex gap-11">

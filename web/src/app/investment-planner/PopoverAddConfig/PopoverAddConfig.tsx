@@ -14,7 +14,7 @@ interface PopoverAddConfigProprs {
     color: string;
     value: number;
   }[];
-  setDataInfos: (dataInfos: any[]) => void;
+  setDataInfos: (dataInfos: unknown[]) => void;
 }
 
 const validationSchema = Yup.object().shape({

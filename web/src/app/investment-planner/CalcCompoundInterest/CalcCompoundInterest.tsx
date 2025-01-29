@@ -152,7 +152,9 @@ export default function CalcCompoundInterest() {
                   aria-expanded={open}
                   className="w-24 justify-between dark:bg-gray-600 dark:text-gray-100"
                 >
-                  {value ? frameworks.find((framework) => framework.value === value)?.label : setValue("month")}
+                  {value
+                    ? (frameworks.find((framework) => framework.value === value)?.label as string)
+                    : setValue("month")}
                   <ChevronsUpDown className="opacity-50" />
                 </Button>
               </PopoverTrigger>

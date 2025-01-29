@@ -1,13 +1,5 @@
 import Parser, { Item } from "rss-parser";
 
-interface ItemProps {
-  title: string;
-  link: string;
-  pubDate: string;
-  description: string;
-  image?: string;
-  "content:encoded": string;
-}
 
 export default async function handler() {
   const parser = new Parser({
@@ -19,7 +11,8 @@ export default async function handler() {
   try {
     const feed = await parser.parseURL("/proxy/rss");
 
-    const items = feed.items.map((item: ItemProps & Item) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const items = feed.items.map((item: any) => {
       return {
         title: item.title,
         link: item.link,

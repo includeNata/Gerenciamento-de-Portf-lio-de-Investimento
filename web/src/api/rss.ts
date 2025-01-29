@@ -1,4 +1,4 @@
-import Parser from "rss-parser";
+import Parser, { Item } from "rss-parser";
 
 export default async function handler() {
   const parser = new Parser({
@@ -9,17 +9,20 @@ export default async function handler() {
 
   try {
     const feed = await parser.parseURL("/proxy/rss");
-    const items = feed.items.map(
-      (item: { title: string; link: string; pubDate: string; description: string; "content:encoded": string }) => {
-        return {
-          title: item.title,
-          link: item.link,
-          pubDate: item.pubDate,
-          description: item.description,
-          image: item["content:encoded"],
-        };
-      },
-    );
+
+    // Define a new type that extends Item from rss-parser
+    type FeedItem = Item & { "content:encoded": string; image: unknown };
+
+    const items = feed.items.map((item: FeedItem) => {
+      return {
+        title: item.title,
+        link: item.link,
+        pubDate: item.pubDate,
+        description: item.description,
+        image: item["content:encoded"],
+      };
+    });
+
     return items;
   } catch (error) {
     console.error("Erro ao processar o feed RSS:", error);

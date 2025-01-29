@@ -1,6 +1,6 @@
 import Parser from "rss-parser";
 
-export default async function handler(req, res) {
+export default async function handler() {
   const parser = new Parser({
     customFields: {
       item: [["media:content", "media:content", { keepArray: true }]],

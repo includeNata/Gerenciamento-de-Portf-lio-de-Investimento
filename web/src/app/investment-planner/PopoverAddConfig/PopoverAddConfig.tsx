@@ -14,7 +14,7 @@ interface PopoverAddConfigProprs {
     color: string;
     value: number;
   }[];
-  setDataInfos: (dataInfos: unknown[]) => void;
+  setDataInfos: (dataInfos: { name: string; color: string; value: number }[]) => void;
 }
 
 const validationSchema = Yup.object().shape({
@@ -24,6 +24,9 @@ const validationSchema = Yup.object().shape({
     .matches(/^#[0-9A-F]{6}$/i, "Cor inválida"),
 });
 
+// Infer the form data type from the validation schema
+type FormData = Yup.InferType<typeof validationSchema>;
+
 export default function PopoverAddConfig({ dataInfos, setDataInfos }: PopoverAddConfigProprs) {
   const [color, setColor] = useState("");
 
@@ -32,7 +35,7 @@ export default function PopoverAddConfig({ dataInfos, setDataInfos }: PopoverAdd
     control,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       name: "",
@@ -40,7 +43,7 @@ export default function PopoverAddConfig({ dataInfos, setDataInfos }: PopoverAdd
     },
   });
 
-  const onSubmit = (data: typeof validationSchema) => {
+  const onSubmit = (data: FormData) => {
     setDataInfos([...dataInfos, { name: data.name, color: data.color, value: 0 }]);
   };
 

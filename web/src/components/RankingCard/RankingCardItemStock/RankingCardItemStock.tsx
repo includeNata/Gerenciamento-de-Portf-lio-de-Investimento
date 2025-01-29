@@ -22,7 +22,7 @@ export default function RankingCardItemStock({ item, formatMarketCap, index }: R
       staleTime: Infinity,
       cacheTime: Infinity,
     },
-    onSuccess(data){
+    onSuccess(data) {
       console.log(data);
       if (data && data[0]?.icon) {
         setImage(data[0].icon);

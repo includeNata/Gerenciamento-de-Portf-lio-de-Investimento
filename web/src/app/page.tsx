@@ -26,6 +26,9 @@ export default function Home() {
     onError(err) {
       console.log(err);
     },
+    onSuccess(data) {
+      console.log(data);
+    },
   });
 
   useEffect(() => {

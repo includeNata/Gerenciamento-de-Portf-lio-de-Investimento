@@ -11,9 +11,8 @@ export default async function handler() {
     const feed = await parser.parseURL("/proxy/rss");
 
     // Define a new type that extends Item from rss-parser
-    type FeedItem = Item & { "content:encoded": string; image: unknown };
 
-    const items = feed.items.map((item: FeedItem) => {
+    const items = feed.items.map((item: unknown) => {
       return {
         title: item.title,
         link: item.link,

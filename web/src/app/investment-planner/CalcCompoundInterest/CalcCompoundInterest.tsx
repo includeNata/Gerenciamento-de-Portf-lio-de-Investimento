@@ -151,10 +151,11 @@ export default function CalcCompoundInterest() {
                   role="combobox"
                   aria-expanded={open}
                   className="w-24 justify-between dark:bg-gray-600 dark:text-gray-100"
+                  onClick={() => {
+                    if (!value) setValue("month");
+                  }}
                 >
-                  {value
-                    ? (frameworks.find((framework) => framework.value === value)?.label as string)
-                    : setValue("month")}
+                  {value ? (frameworks.find((framework) => framework.value === value)?.label as string) : "Mês (s)"}
                   <ChevronsUpDown className="opacity-50" />
                 </Button>
               </PopoverTrigger>

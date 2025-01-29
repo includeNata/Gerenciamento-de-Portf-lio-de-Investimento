@@ -76,8 +76,8 @@ export default function CalcCompoundInterest() {
       calcRateMonthAccumulate += calcRateMonth;
       amountFromMonthlyContributions = amountFromInitial + calcRateMonthAccumulate;
 
-      totalAmount = amountFromMonthlyContributions.toFixed(2);
-      accumulatedInterest = calcRateMonthAccumulate.toFixed(2);
+      totalAmount = amountFromMonthlyContributions;
+      accumulatedInterest = calcRateMonthAccumulate;
 
       monthlyInterestData.push({
         month: i,
@@ -88,8 +88,8 @@ export default function CalcCompoundInterest() {
 
     setMonthlyData(monthlyInterestData);
     setValuesInterest([
-      Number(totalAmount),
-      Number(accumulatedInterest),
+      Number(totalAmount.toFixed(2)),
+      Number(accumulatedInterest.toFixed(2)),
       Number(valueMonthly * monthsLoop + valueInitial),
     ]);
   }

@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 const schemaData = Yup.object({
   valueInitial: Yup.number().required("Campo obrigatório"),
-  valueMonthly: Yup.number(),
+  valueMonthly: Yup.number().required("Campo obrigatório"),
   interestRate: Yup.number().required("Campo obrigatório"),
   months: Yup.number().required("Campo obrigatório"),
 });

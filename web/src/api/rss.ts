@@ -1,4 +1,13 @@
-import Parser from "rss-parser";
+import Parser, { Item } from "rss-parser";
+
+interface ItemProps {
+  title: string;
+  link: string;
+  pubDate: string;
+  description: string;
+  image?: string;
+  "content:encoded": string;
+}
 
 export default async function handler() {
   const parser = new Parser({
@@ -10,9 +19,7 @@ export default async function handler() {
   try {
     const feed = await parser.parseURL("/proxy/rss");
 
-    // Define a new type that extends Item from rss-parser
-
-    const items = feed.items.map((item: unknown) => {
+    const items = feed.items.map((item: ItemProps & Item) => {
       return {
         title: item.title,
         link: item.link,

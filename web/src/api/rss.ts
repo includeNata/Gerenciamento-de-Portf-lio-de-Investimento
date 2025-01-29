@@ -1,5 +1,4 @@
-import Parser, { Item } from "rss-parser";
-
+import Parser from "rss-parser";
 
 export default async function handler() {
   const parser = new Parser({

@@ -24,6 +24,5 @@ export default async function handler() {
     return items;
   } catch (error) {
     console.error("Erro ao processar o feed RSS:", error);
-    res.status(500).json({ error: "Falha ao processar o feed RSS" });
   }
 }

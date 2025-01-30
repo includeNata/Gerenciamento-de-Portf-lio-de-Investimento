@@ -240,7 +240,7 @@ export default function Home() {
             <RankingCardICrypto
               title="Crypto Mais Visitados"
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
+              data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
               onViewAll={() => console.log("Clicked!")}
               styleRankingCard="w-[30%] h-[242px] overflow-auto"
             />
@@ -249,7 +249,7 @@ export default function Home() {
           <RankingCardCryptoMoreVisited
             title="Crypto Mais Visitados"
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
+            data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-full"
           />
@@ -264,7 +264,7 @@ export default function Home() {
               <RankingCardFiis
                 title="FIIs Markets"
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
+                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
               />
             </div>
@@ -277,7 +277,7 @@ export default function Home() {
               <RankingCardFiis
                 title="BDRs Mais Visitados"
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
+                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
               />
             </div>

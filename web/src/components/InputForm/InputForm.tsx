@@ -1,10 +1,10 @@
 import { ComponentProps } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-type InputFormProps<T> = {
+type InputFormProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   errors: FieldErrors<T>;
   spanText?: string;
@@ -12,7 +12,7 @@ type InputFormProps<T> = {
 } & ComponentProps<"input"> &
   ComponentProps<"label">;
 
-export default function InputForm({
+export default function InputForm<T extends FieldValues>({
   title,
   htmlFor,
   spanText,
@@ -22,7 +22,7 @@ export default function InputForm({
   type,
   placeholder,
   options,
-}: InputFormProps) {
+}: InputFormProps<T>) {
   return (
     <div className="flex flex-col items-start gap-2">
       <Label htmlFor={htmlFor} className="text-sm font-medium text-gray-600 dark:text-gray-300">

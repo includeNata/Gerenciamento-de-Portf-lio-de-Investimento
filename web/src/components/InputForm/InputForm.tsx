@@ -9,7 +9,7 @@ type InputFormProps<T extends FieldValues> = {
   errors: FieldErrors<T>;
   spanText?: string;
   options?: React.ReactNode;
-  name: string;
+  name: Path<T>;
 } & ComponentProps<"input"> &
   ComponentProps<"label">;
 
@@ -42,7 +42,7 @@ export default function InputForm<T extends FieldValues>({
           placeholder={placeholder}
           className="h-full w-full rounded-r-lg border-none bg-transparent px-4 py-2 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus-visible:ring-0 dark:text-white"
         />
-        {options} {/* Render the options directly */}
+        {options}
       </div>
 
       {errors[name] && <span className="text-red-500">{String(errors[name]?.message)}</span>}

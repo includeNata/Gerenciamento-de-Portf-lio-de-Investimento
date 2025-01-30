@@ -1,5 +1,5 @@
 import React, { ComponentProps } from "react";
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldErrors, FieldValues, Path, UseFormRegister } from "react-hook-form";
 
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";

@@ -34,7 +34,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const response = await handler();
-      setItems(response);
+      setItems(response || []); // Default to an empty array if response is undefined
     })();
   }, []);
 

@@ -15,7 +15,7 @@ import Title from "@/components/Title/Title";
 import { useQueryHook } from "@/hook/useQueryHook";
 
 export default function Home() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [items, setItems] = useState<any[]>([]);
   const { data: dataListCrypto, isLoading: isLoadingListCrypto } = useQueryHook({
     queryKey: ["query-list-crypto"],
@@ -239,7 +239,6 @@ export default function Home() {
 
             <RankingCardICrypto
               title="Crypto Mais Visitados"
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
               onViewAll={() => console.log("Clicked!")}
               styleRankingCard="w-[30%] h-[242px] overflow-auto"
@@ -248,7 +247,6 @@ export default function Home() {
 
           <RankingCardCryptoMoreVisited
             title="Crypto Mais Visitados"
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-full"
@@ -263,7 +261,6 @@ export default function Home() {
             <div className="flex w-full items-center justify-between">
               <RankingCardFiis
                 title="FIIs Markets"
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
               />
@@ -276,7 +273,6 @@ export default function Home() {
             <div className="flex w-full items-center justify-between">
               <RankingCardFiis
                 title="BDRs Mais Visitados"
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index: number) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
               />

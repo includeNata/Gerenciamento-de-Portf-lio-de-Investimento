@@ -24,7 +24,6 @@ const validationSchema = Yup.object().shape({
     .matches(/^#[0-9A-F]{6}$/i, "Cor inválida"),
 });
 
-// Infer the form data type from the validation schema
 type FormData = Yup.InferType<typeof validationSchema>;
 
 export default function PopoverAddConfig({ dataInfos, setDataInfos }: PopoverAddConfigProprs) {

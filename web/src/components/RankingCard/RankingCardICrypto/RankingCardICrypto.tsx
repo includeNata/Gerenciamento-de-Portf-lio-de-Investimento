@@ -4,7 +4,7 @@ import RankingCardItemCrypto from "./RankingCardItemCrypto/RankingCardItemCrypto
 
 interface RankingCardICryptoProps {
   title: string;
-  data: unknown[];
+  data: any[];
   onViewAll: () => void;
   styleRankingCard?: string;
 }

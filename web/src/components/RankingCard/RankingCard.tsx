@@ -4,13 +4,12 @@ import RankingCardItemStock from "./RankingCardItemStock/RankingCardItemStock";
 
 interface RankingCardProps {
   title: string;
-  data: unknown[];
+  data: any[];
   onViewAll: () => void;
   styleRankingCard?: string;
 }
 
 export default function RankingCard({ title, data, onViewAll, styleRankingCard }: RankingCardProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function formatMarketCap(value: any) {
     if (value >= 1e12) {
       return `${(value / 1e12).toFixed(2)}T`;

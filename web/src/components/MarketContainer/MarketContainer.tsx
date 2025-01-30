@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableRow } from "../ui/table";
 
 export default function MarketContainer() {
   const [selected, setSelected] = useState("Stock");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const [invoices, setInvoices] = useState<any[]>([]);
 
   useEffect(() => {
@@ -58,7 +58,6 @@ export default function MarketContainer() {
         <Table>
           <TableBody>
             {invoices.length > 0 ? (
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               invoices.slice(0, 6).map((invoice: any) => (
                 <TableRow key={invoice.invoice || Math.random()}>
                   <TableCell className="px-3 py-2">

@@ -7,8 +7,7 @@ import { useQueryHook } from "@/hook/useQueryHook";
 import { logoNameMapping } from "@/util/logoNameMapping";
 
 interface RankingCardItemStockProps {
-  item: unknown;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  item: any;
   formatMarketCap: (value: any) => string;
   index: number;
 }

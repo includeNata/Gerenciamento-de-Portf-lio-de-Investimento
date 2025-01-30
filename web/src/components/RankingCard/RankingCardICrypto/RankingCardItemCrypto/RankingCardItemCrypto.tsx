@@ -1,7 +1,7 @@
 "use client";
 
 interface RankingCardItemCryptoProps {
-  item: unknown;
+  item: any;
   index: number;
 }
 

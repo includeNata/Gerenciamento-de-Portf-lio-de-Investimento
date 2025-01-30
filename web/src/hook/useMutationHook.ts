@@ -8,8 +8,8 @@ export const useMutationHook = <TData = unknown, TError = unknown, TVariables = 
   options,
 }: MutationModel<TData, TError, TVariables, TContext>): UseMutationResult<TData, TError, TVariables, TContext> => {
   return useMutation({
+    ...options,
     mutationFn,
     onSuccess,
-    ...options,
   });
 };

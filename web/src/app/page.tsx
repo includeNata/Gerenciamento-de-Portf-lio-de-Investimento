@@ -15,8 +15,8 @@ import Title from "@/components/Title/Title";
 import { useQueryHook } from "@/hook/useQueryHook";
 
 export default function Home() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [items, setItems] = useState([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  const [items, setItems] = useState<any[]>([]);
   const { data: dataListCrypto, isLoading: isLoadingListCrypto } = useQueryHook({
     queryKey: ["query-list-crypto"],
     staleTime: 3000,

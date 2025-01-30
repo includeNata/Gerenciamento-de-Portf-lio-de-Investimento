@@ -4,5 +4,5 @@ export interface MutationModel<TData = unknown, TError = unknown, TVariables = v
   mutationFn: MutationFunction<TData, TVariables>;
   onSuccess?: (data: TData, variables: TVariables, context: TContext) => void | Promise<void>;
   gcTime?: number;
-  options?: Omit<UseMutationOptions<TData, TError, TVariables, TContext>>;
+  options?: UseMutationOptions<TData, TError, TVariables, TContext>;
 }

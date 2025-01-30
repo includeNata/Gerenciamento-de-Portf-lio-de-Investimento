@@ -1,6 +1,8 @@
+import React from "react";
+
 interface TitleProps {
   name: string;
-  icon: react.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & react.RefAttributes<SVGSVGElement>>;
+  icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
 }
 
 export default function Title({ name, icon }: TitleProps) {

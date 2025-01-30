@@ -235,7 +235,6 @@ export default function Home() {
               data={dataListCrypto}
               onViewAll={() => console.log("Clicked!")}
               styleRankingCard="w-[65%]"
-              rankingCard="crypto"
             />
 
             <RankingCardICrypto
@@ -243,7 +242,6 @@ export default function Home() {
               data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
               onViewAll={() => console.log("Clicked!")}
               styleRankingCard="w-[30%] h-[242px] overflow-auto"
-              rankingCard="crypto"
             />
           </div>
 
@@ -252,7 +250,6 @@ export default function Home() {
             data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-full"
-            rankingCard="crypto"
           />
         </div>
       </section>
@@ -266,7 +263,6 @@ export default function Home() {
                 title="FIIs Markets"
                 data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
-                rankingCard="fiis"
               />
             </div>
           </div>
@@ -279,13 +275,11 @@ export default function Home() {
                 title="BDRs Mais Visitados"
                 data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
-                rankingCard="fiis"
               />
             </div>
           </div>
         </section>
       </div>
-
       <Footer />
     </div>
   );

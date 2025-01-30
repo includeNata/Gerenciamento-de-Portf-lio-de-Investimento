@@ -13,7 +13,7 @@ interface RankingCardItemStockProps {
 }
 
 export default function RankingCardItemStock({ item, formatMarketCap, index }: RankingCardItemStockProps) {
-  const [img, setImage] = useState<string | [] | undefined>("/path-to-placeholder-image");
+  const [img, setImage] = useState<string | undefined>("/path-to-placeholder-image");
 
   const { isLoading } = useQueryHook({
     queryKey: ["query-logo", item.name],
@@ -43,7 +43,7 @@ export default function RankingCardItemStock({ item, formatMarketCap, index }: R
         {isLoading || img === "/path-to-placeholder-image" ? (
           <Building2 size={28} />
         ) : (
-          <img src={img} alt={item.name} className="h-8 w-8 rounded-full" />
+          <img src={img && img} alt={item.name} className="h-8 w-8 rounded-full" />
         )}
         <div>
           <h3 className="text-sm">{item.stock}</h3>

@@ -8,7 +8,8 @@ import { logoNameMapping } from "@/util/logoNameMapping";
 
 interface RankingCardItemStockProps {
   item: unknown;
-  formatMarketCap: () => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formatMarketCap: (value: any) => string;
   index: number;
 }
 
@@ -23,7 +24,6 @@ export default function RankingCardItemStock({ item, formatMarketCap, index }: R
       cacheTime: Infinity,
     },
     onSuccess(data) {
-      console.log(data);
       if (data && data[0]?.icon) {
         setImage(data[0].icon);
       } else {

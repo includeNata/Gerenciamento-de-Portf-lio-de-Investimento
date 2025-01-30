@@ -10,7 +10,8 @@ interface RankingCardProps {
 }
 
 export default function RankingCard({ title, data, onViewAll, styleRankingCard }: RankingCardProps) {
-  function formatMarketCap(value) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function formatMarketCap(value: any) {
     if (value >= 1e12) {
       return `${(value / 1e12).toFixed(2)}T`;
     } else if (value >= 1e9) {

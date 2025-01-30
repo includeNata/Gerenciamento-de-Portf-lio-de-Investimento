@@ -1,9 +1,9 @@
 import pluginJs from "@eslint/js";
+import eslintPluginQuery from "@tanstack/eslint-plugin-query";
 import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 import pluginPrettier from "eslint-plugin-prettier";
 import pluginReact from "eslint-plugin-react";
 import pluginSimpleImportSort from "eslint-plugin-simple-import-sort";
-import eslintPluginQuery from "@tanstack/eslint-plugin-query";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -50,6 +50,7 @@ export default [
       "jsx-a11y/aria-unsupported-elements": "warn",
       "jsx-a11y/role-has-required-aria-props": "warn",
       "jsx-a11y/role-supports-aria-props": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];

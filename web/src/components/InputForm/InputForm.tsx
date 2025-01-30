@@ -9,6 +9,7 @@ type InputFormProps<T extends FieldValues> = {
   errors: FieldErrors<T>;
   spanText?: string;
   options?: React.ReactNode;
+  name: string;
 } & ComponentProps<"input"> &
   ComponentProps<"label">;
 

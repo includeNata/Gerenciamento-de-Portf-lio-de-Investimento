@@ -239,7 +239,8 @@ export default function Home() {
 
             <RankingCardICrypto
               title="Crypto Mais Visitados"
-              data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
               onViewAll={() => console.log("Clicked!")}
               styleRankingCard="w-[30%] h-[242px] overflow-auto"
             />
@@ -247,7 +248,8 @@ export default function Home() {
 
           <RankingCardCryptoMoreVisited
             title="Crypto Mais Visitados"
-            data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
             onViewAll={() => console.log("Clicked!")}
             styleRankingCard="w-full"
           />
@@ -261,7 +263,8 @@ export default function Home() {
             <div className="flex w-full items-center justify-between">
               <RankingCardFiis
                 title="FIIs Markets"
-                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
               />
             </div>
@@ -273,7 +276,8 @@ export default function Home() {
             <div className="flex w-full items-center justify-between">
               <RankingCardFiis
                 title="BDRs Mais Visitados"
-                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_, index) => index < 4)}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                data={isLoadingListCrypto ? [] : dataListCrypto?.filter((_: any, index) => index < 4)}
                 onViewAll={() => console.log("Clicked!")}
               />
             </div>

@@ -61,7 +61,7 @@ export default function RankingCardCryptoMoreVisited({
                     <div className="flex flex-col justify-center">
                       <span>{item.marketCap}</span>
                       <span
-                        className={`text-[10px] ${item.marketCapPercentage.split("-")[0] > 0 ? "text-green-500" : "text-red-500"}`}
+                        className={`text-[10px] ${parseFloat(item.marketCapPercentage.split("-")[0]) > 0 ? "text-green-500" : "text-red-500"}`}
                       >
                         {item.marketCapPercentage}
                       </span>
@@ -72,7 +72,7 @@ export default function RankingCardCryptoMoreVisited({
                     <div className="flex w-fit flex-col items-end">
                       <span>{item.volume}</span>
                       <span
-                        className={`text-[10px] ${item.volumePercentage.split("-")[0] > 0 ? "text-green-500" : "text-red-500"}`}
+                        className={`text-[10px] ${parseFloat(item.volumePercentage.split("-")[0]) > 0 ? "text-green-500" : "text-red-500"}`}
                       >
                         {item.volumePercentage}
                       </span>

@@ -4,9 +4,13 @@ import com.google.gson.Gson;
 import data.com.entities.Stock;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
 import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class StockService {
-    private static final String URL = "https://www.fundamentus.com.br/resultado.php";
+    private static final String URL = "https://www.fundamentus.com.br/resultado.php?interface=classic&interface=mobile";
     CopyOnWriteArrayList<Stock> stock = new CopyOnWriteArrayList<>();
 
     private Jedis jedis;
@@ -24,17 +28,19 @@ public class StockService {
     public StockService(Jedis jedis) {this.jedis = jedis;}
 
     public List<Stock> getStock() {
-        String xpath = "//*[@id=\"resultado\"]/tbody/tr[#]";
+       // String xpath = "//*[@id=\"resultado\"]/tbody/tr[#]";
+        String xpath = "/html/body/div[2]/div/div[2]/table/tbody/tr[#]";
+
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         try {
             Document doc = Jsoup.connect(URL).get();
 
-            for (int i = 1; i <= 496; i++) {
+            for(int i=1;i<=496;i++){
                 int pos = i;
-                executorService.submit(() -> {
+                executorService.submit(()->{
                     String aux = xpath;
-                    aux = aux.replace("#", pos + "");
-                    stock.add(create(doc, aux));
+                    aux = aux.replace("#", pos +"");
+                    stock.add(create(doc,aux));
                     aux = xpath;
                 });
 
@@ -51,72 +57,44 @@ public class StockService {
     }
 
     public Stock create(Document doc, String xpath) {
-        Stock s = new Stock();
-        String aux;
-
-        s.setPaper(doc.selectXpath(xpath + "/td[1]").text());
-
-        aux = doc.selectXpath(xpath + "/td[2]").text().replace(",", "").replace(",", ".");
-        s.setQuotation(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[3]").text().replace(",", ".");
-        s.setpL(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[4]").text().replace(",", ".");
-        s.setpVp(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[5]").text().replace(",", ".");
-        s.setPsr(Double.parseDouble(aux));
-
-        s.setDividend(doc.selectXpath(xpath + "/td[6]").text());
-
-        aux = doc.selectXpath(xpath + "/td[7]").text().replace(",", ".").replaceAll("\\.(?=.*\\.)", "");;
-        s.setpActive(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[8]").text().replace(",", ".");
-        s.setpWorkCapital(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[9]").text().replace(",", ".");
-        s.setpEbit(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[10]").text().replace(",", ".");
-        s.setpLiquidCurrentAssets(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[11]").text().replace(",", ".");
-        s.setEvEbit(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[12]").text().replace(",", ".");
-        s.setEvEbitda(Double.parseDouble(aux));
-
-        s.setEbitMargin(doc.selectXpath(xpath + "/td[13]").text());
-
-        s.setLiquidMargin(doc.selectXpath(xpath + "/td[14]").text());
-
-        aux = doc.selectXpath(xpath + "/td[15]").text().replace(",", ".");
-        s.setLiquidCurrent(Double.parseDouble(aux));
-
-        s.setRoic(doc.selectXpath(xpath + "/td[16]").text());
-
-        s.setRoe(doc.selectXpath(xpath + "/td[17]").text());
-
-        aux = doc.selectXpath(xpath + "/td[18]").text().replaceAll("\\.(?=.*\\.)", "");
-        s.setLiquid2Month(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[19]").text().replaceAll("\\.(?=.*\\.)", "");
-        s.setLiquidWorth(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[20]").text().replace(",", ".");
-        s.setLiquidDebtEquity(Double.parseDouble(aux));
-
-        s.setRevenueGrowth5Years(doc.selectXpath(xpath + "/td[21]").text());
-
-        aux = doc.selectXpath(xpath + "/td[22]").text().replace(",", ".");
-        s.setLiquityDebtEbitida(Double.parseDouble(aux));
-
-        aux = doc.selectXpath(xpath + "/td[23]").text().replaceAll("\\.(?=.*\\.)", "");
-        s.setMarketValue(Double.parseDouble(aux));
+            Stock s = new Stock();
+            Element element = doc.selectXpath(xpath).getFirst();
+            Elements elements = element.children();
+            String [] fields =  convertToArray(elements);
+            s.setPaper(fields[0]);
+            s.setQuotation(fields[1]);
+            s.setpL(fields[2]);
+            s.setpVp(fields[3]);
+            s.setPsr(fields[4]);
+            s.setDividend(fields[5]);
+            s.setpActive(fields[6]);
+            s.setpWorkCapital(fields[7]);
+            s.setpEbit(fields[8]);
+            s.setpLiquidCurrentAssets(fields[9]);
+            s.setEvEbit(fields[10]); //
+            s.setEvEbitda(fields[11]); //
+            s.setEbitMargin(fields[12]);
+            s.setLiquidMargin(fields[13]);//
+            s.setLiquidCurrent(fields[14]);
+            s.setRoic(fields[15]);
+            s.setRoe(fields[16]);
+            s.setLiquid2Month(fields[17]);
+            s.setLiquidWorth(fields[18]);
+            s.setLiquidDebtEquity(fields[19]);
+            s.setRevenueGrowth5Years(fields[20]);
+            s.setLiquityDebtEbitida(fields[21]);
+            s.setMarketValue(fields[22]);
 
         return s;
+    }
+
+    public String[] convertToArray(Elements elements) {
+        String [] result = new String[elements.size()];
+
+        for(int i=0;i<elements.size();i++){
+            result[i] = elements.get(i).text();
+        }
+        return result;
     }
 
     public void addDataRedis(){

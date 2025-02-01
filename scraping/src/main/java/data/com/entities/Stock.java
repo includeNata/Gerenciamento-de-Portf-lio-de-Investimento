@@ -2,33 +2,33 @@ package data.com.entities;
 
 public class Stock {
     private String paper;
-    private Double quotation;
-    private Double pL;
-    private Double pVp;
-    private Double psr;
+    private String quotation;
+    private String pL;
+    private String pVp;
+    private String psr;
     private String dividend;
-    private Double pActive;
-    private Double pWorkCapital;
-    private Double pEbit;
-    private Double pLiquidCurrentAssets;
-    private Double evEbit;
-    private Double evEbitda;
+    private String pActive;
+    private String pWorkCapital;
+    private String pEbit;
+    private String pLiquidCurrentAssets;
+    private String evEbit;
+    private String evEbitda;
     private String ebitMargin;
     private String liquidMargin;
-    private Double liquidCurrent;
+    private String liquidCurrent;
     private String roic;
     private String roe;
-    private Double liquid2Month;
-    private Double liquidWorth;
-    private Double liquidDebtEquity;
+    private String liquid2Month;
+    private String liquidWorth;
+    private String liquidDebtEquity;
     private String revenueGrowth5Years;
-    private Double liquityDebtEbitida;
-    private Double marketValue;
+    private String liquityDebtEbitida;
+    private String marketValue;
 
     public Stock() {
     }
 
-    public Stock(String paper, Double quotation, Double pL, Double pVp, Double psr, String dividend, Double pActive, Double pWorkCapital, Double pEbit, Double pLiquidCurrentAssets, Double evEbit, Double evEbitda, String ebitMargin, String liquidMargin, Double liquidCurrent, String roic, String roe, Double liquid2Month, Double liquidWorth, Double liquidDebtEquity, String revenueGrowth5Years, Double liquityDebtEbitida, Double marketValue) {
+    public Stock(String paper, String quotation, String pL, String pVp, String psr, String dividend, String pActive, String pWorkCapital, String pEbit, String pLiquidCurrentAssets, String evEbit, String evEbitda, String ebitMargin, String liquidMargin, String liquidCurrent, String roic, String roe, String liquid2Month, String liquidWorth, String liquidDebtEquity, String revenueGrowth5Years, String liquityDebtEbitida, String marketValue) {
         this.paper = paper;
         this.quotation = quotation;
         this.pL = pL;
@@ -62,35 +62,35 @@ public class Stock {
         this.paper = paper;
     }
 
-    public Double getQuotation() {
+    public String getQuotation() {
         return quotation;
     }
 
-    public void setQuotation(Double quotation) {
+    public void setQuotation(String quotation) {
         this.quotation = quotation;
     }
 
-    public Double getpL() {
+    public String getpL() {
         return pL;
     }
 
-    public void setpL(Double pL) {
+    public void setpL(String pL) {
         this.pL = pL;
     }
 
-    public Double getpVp() {
+    public String getpVp() {
         return pVp;
     }
 
-    public void setpVp(Double pVp) {
+    public void setpVp(String pVp) {
         this.pVp = pVp;
     }
 
-    public Double getPsr() {
+    public String getPsr() {
         return psr;
     }
 
-    public void setPsr(Double psr) {
+    public void setPsr(String psr) {
         this.psr = psr;
     }
 
@@ -102,51 +102,51 @@ public class Stock {
         this.dividend = dividend;
     }
 
-    public Double getpActive() {
+    public String getpActive() {
         return pActive;
     }
 
-    public void setpActive(Double pActive) {
+    public void setpActive(String pActive) {
         this.pActive = pActive;
     }
 
-    public Double getpWorkCapital() {
+    public String getpWorkCapital() {
         return pWorkCapital;
     }
 
-    public void setpWorkCapital(Double pWorkCapital) {
+    public void setpWorkCapital(String pWorkCapital) {
         this.pWorkCapital = pWorkCapital;
     }
 
-    public Double getpEbit() {
+    public String getpEbit() {
         return pEbit;
     }
 
-    public void setpEbit(Double pEbit) {
+    public void setpEbit(String pEbit) {
         this.pEbit = pEbit;
     }
 
-    public Double getpLiquidCurrentAssets() {
+    public String getpLiquidCurrentAssets() {
         return pLiquidCurrentAssets;
     }
 
-    public void setpLiquidCurrentAssets(Double pLiquidCurrentAssets) {
+    public void setpLiquidCurrentAssets(String pLiquidCurrentAssets) {
         this.pLiquidCurrentAssets = pLiquidCurrentAssets;
     }
 
-    public Double getEvEbit() {
+    public String getEvEbit() {
         return evEbit;
     }
 
-    public void setEvEbit(Double evEbit) {
+    public void setEvEbit(String evEbit) {
         this.evEbit = evEbit;
     }
 
-    public Double getEvEbitda() {
+    public String getEvEbitda() {
         return evEbitda;
     }
 
-    public void setEvEbitda(Double evEbitda) {
+    public void setEvEbitda(String evEbitda) {
         this.evEbitda = evEbitda;
     }
 
@@ -166,11 +166,11 @@ public class Stock {
         this.liquidMargin = liquidMargin;
     }
 
-    public Double getLiquidCurrent() {
+    public String getLiquidCurrent() {
         return liquidCurrent;
     }
 
-    public void setLiquidCurrent(Double liquidCurrent) {
+    public void setLiquidCurrent(String liquidCurrent) {
         this.liquidCurrent = liquidCurrent;
     }
 
@@ -190,27 +190,27 @@ public class Stock {
         this.roe = roe;
     }
 
-    public Double getLiquid2Month() {
+    public String getLiquid2Month() {
         return liquid2Month;
     }
 
-    public void setLiquid2Month(Double liquid2Month) {
+    public void setLiquid2Month(String liquid2Month) {
         this.liquid2Month = liquid2Month;
     }
 
-    public Double getLiquidWorth() {
+    public String getLiquidWorth() {
         return liquidWorth;
     }
 
-    public void setLiquidWorth(Double liquidWorth) {
+    public void setLiquidWorth(String liquidWorth) {
         this.liquidWorth = liquidWorth;
     }
 
-    public Double getLiquidDebtEquity() {
+    public String getLiquidDebtEquity() {
         return liquidDebtEquity;
     }
 
-    public void setLiquidDebtEquity(Double liquidDebtEquity) {
+    public void setLiquidDebtEquity(String liquidDebtEquity) {
         this.liquidDebtEquity = liquidDebtEquity;
     }
 
@@ -222,19 +222,19 @@ public class Stock {
         this.revenueGrowth5Years = revenueGrowth5Years;
     }
 
-    public Double getLiquityDebtEbitida() {
+    public String getLiquityDebtEbitida() {
         return liquityDebtEbitida;
     }
 
-    public void setLiquityDebtEbitida(Double liquityDebtEbitida) {
+    public void setLiquityDebtEbitida(String liquityDebtEbitida) {
         this.liquityDebtEbitida = liquityDebtEbitida;
     }
 
-    public Double getMarketValue() {
+    public String getMarketValue() {
         return marketValue;
     }
 
-    public void setMarketValue(Double marketValue) {
+    public void setMarketValue(String marketValue) {
         this.marketValue = marketValue;
     }
 
@@ -242,27 +242,28 @@ public class Stock {
     public String toString() {
         return "Stock{" +
                 "paper='" + paper + '\'' +
-                ", quotation=" + quotation +
-                ", pL=" + pL +
-                ", pVp=" + pVp +
-                ", psr=" + psr +
+                ", quotation='" + quotation + '\'' +
+                ", pL='" + pL + '\'' +
+                ", pVp='" + pVp + '\'' +
+                ", psr='" + psr + '\'' +
                 ", dividend='" + dividend + '\'' +
-                ", pActive=" + pActive +
-                ", pWorkCapital=" + pWorkCapital +
-                ", pEbit=" + pEbit +
-                ", pLiquidCurrentAssets=" + pLiquidCurrentAssets +
-                ", evEbit=" + evEbit +
-                ", evEbitda=" + evEbitda +
+                ", pActive='" + pActive + '\'' +
+                ", pWorkCapital='" + pWorkCapital + '\'' +
+                ", pEbit='" + pEbit + '\'' +
+                ", pLiquidCurrentAssets='" + pLiquidCurrentAssets + '\'' +
+                ", evEbit='" + evEbit + '\'' +
+                ", evEbitda='" + evEbitda + '\'' +
+                ", ebitMargin='" + ebitMargin + '\'' +
                 ", liquidMargin='" + liquidMargin + '\'' +
-                ", liquidCurrent=" + liquidCurrent +
+                ", liquidCurrent='" + liquidCurrent + '\'' +
                 ", roic='" + roic + '\'' +
                 ", roe='" + roe + '\'' +
-                ", liquid2Month=" + liquid2Month +
-                ", liquidWorth=" + liquidWorth +
-                ", liquidDebtEquity=" + liquidDebtEquity +
+                ", liquid2Month='" + liquid2Month + '\'' +
+                ", liquidWorth='" + liquidWorth + '\'' +
+                ", liquidDebtEquity='" + liquidDebtEquity + '\'' +
                 ", revenueGrowth5Years='" + revenueGrowth5Years + '\'' +
-                ", liquityDebtEbitida=" + liquityDebtEbitida +
-                ", marketValue=" + marketValue +
+                ", liquityDebtEbitida='" + liquityDebtEbitida + '\'' +
+                ", marketValue='" + marketValue + '\'' +
                 '}';
     }
 }

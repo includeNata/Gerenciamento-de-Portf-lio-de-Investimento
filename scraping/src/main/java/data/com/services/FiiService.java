@@ -87,7 +87,7 @@ public class FiiService {
             f.setPriceM2(Double.parseDouble(aux));
 
             aux  = doc.selectXpath(xpath+"/td[11]").text();
-            aux =aux.replace(",","").replace(",",".");
+            aux = aux.replace(",","").replace(",",".");
             aux = aux.replaceAll("\\.(?=.*\\.)", "");
             f.setRentM2(Double.parseDouble(aux));
 

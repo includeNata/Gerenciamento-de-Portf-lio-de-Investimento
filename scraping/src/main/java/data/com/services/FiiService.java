@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class FiiService {
-
     private static final String URL = "https://www.fundamentus.com.br/fii_resultado.php";
     CopyOnWriteArrayList<Fii> fiis = new CopyOnWriteArrayList<>();
 

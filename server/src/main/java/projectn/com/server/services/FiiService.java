@@ -14,7 +14,6 @@ import java.util.List;
 
 @Service
 public class FiiService {
-
     @Autowired
     private Gson gson = new Gson();
 

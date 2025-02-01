@@ -13,6 +13,7 @@ public class Stock {
     private Double pLiquidCurrentAssets;
     private Double evEbit;
     private Double evEbitda;
+    private String ebitMargin;
     private String liquidMargin;
     private Double liquidCurrent;
     private String roic;
@@ -27,7 +28,7 @@ public class Stock {
     public Stock() {
     }
 
-    public Stock(String paper, Double quotation, Double pL, Double pVp, Double psr, String dividend, Double pActive, Double pWorkCapital, Double pEbit, Double pLiquidCurrentAssets, Double evEbit, Double evEbitda, String liquidMargin, Double liquidCurrent, String roic, String roe, Double liquid2Month, Double liquidWorth, Double liquidDebtEquity, String revenueGrowth5Years, Double liquityDebtEbitida, Double marketValue) {
+    public Stock(String paper, Double quotation, Double pL, Double pVp, Double psr, String dividend, Double pActive, Double pWorkCapital, Double pEbit, Double pLiquidCurrentAssets, Double evEbit, Double evEbitda, String ebitMargin, String liquidMargin, Double liquidCurrent, String roic, String roe, Double liquid2Month, Double liquidWorth, Double liquidDebtEquity, String revenueGrowth5Years, Double liquityDebtEbitida, Double marketValue) {
         this.paper = paper;
         this.quotation = quotation;
         this.pL = pL;
@@ -40,6 +41,7 @@ public class Stock {
         this.pLiquidCurrentAssets = pLiquidCurrentAssets;
         this.evEbit = evEbit;
         this.evEbitda = evEbitda;
+        this.ebitMargin = ebitMargin;
         this.liquidMargin = liquidMargin;
         this.liquidCurrent = liquidCurrent;
         this.roic = roic;
@@ -146,6 +148,14 @@ public class Stock {
 
     public void setEvEbitda(Double evEbitda) {
         this.evEbitda = evEbitda;
+    }
+
+    public String getEbitMargin() {
+        return ebitMargin;
+    }
+
+    public void setEbitMargin(String ebitMargin) {
+        this.ebitMargin = ebitMargin;
     }
 
     public String getLiquidMargin() {

@@ -24,7 +24,7 @@ public class StockService {
     public StockService(Jedis jedis) {this.jedis = jedis;}
 
     public List<Stock> getStock() {
-        String xpath = "//*[@class=\"table-resultado\"]/tbody/tr[#]";
+        String xpath = "//*[@id=\"resultado\"]/tbody/tr[#]";
         ExecutorService executorService = Executors.newFixedThreadPool(4);
         try {
             Document doc = Jsoup.connect(URL).get();
@@ -54,10 +54,9 @@ public class StockService {
         Stock s = new Stock();
         String aux;
 
-        // Extraindo e atribuindo os valores ao objeto Stock
         s.setPaper(doc.selectXpath(xpath + "/td[1]").text());
 
-        aux = doc.selectXpath(xpath + "/td[2]").text().replace(",", ".");
+        aux = doc.selectXpath(xpath + "/td[2]").text().replace(",", "").replace(",", ".");
         s.setQuotation(Double.parseDouble(aux));
 
         aux = doc.selectXpath(xpath + "/td[3]").text().replace(",", ".");
@@ -71,7 +70,7 @@ public class StockService {
 
         s.setDividend(doc.selectXpath(xpath + "/td[6]").text());
 
-        aux = doc.selectXpath(xpath + "/td[7]").text().replace(",", ".");
+        aux = doc.selectXpath(xpath + "/td[7]").text().replace(",", ".").replaceAll("\\.(?=.*\\.)", "");;
         s.setpActive(Double.parseDouble(aux));
 
         aux = doc.selectXpath(xpath + "/td[8]").text().replace(",", ".");
@@ -89,30 +88,32 @@ public class StockService {
         aux = doc.selectXpath(xpath + "/td[12]").text().replace(",", ".");
         s.setEvEbitda(Double.parseDouble(aux));
 
-        s.setLiquidMargin(doc.selectXpath(xpath + "/td[13]").text());
+        s.setEbitMargin(doc.selectXpath(xpath + "/td[13]").text());
 
-        aux = doc.selectXpath(xpath + "/td[14]").text().replace(",", ".");
+        s.setLiquidMargin(doc.selectXpath(xpath + "/td[14]").text());
+
+        aux = doc.selectXpath(xpath + "/td[15]").text().replace(",", ".");
         s.setLiquidCurrent(Double.parseDouble(aux));
 
-        s.setRoic(doc.selectXpath(xpath + "/td[15]").text());
+        s.setRoic(doc.selectXpath(xpath + "/td[16]").text());
 
-        s.setRoe(doc.selectXpath(xpath + "/td[16]").text());
+        s.setRoe(doc.selectXpath(xpath + "/td[17]").text());
 
-        aux = doc.selectXpath(xpath + "/td[17]").text().replace(",", ".");
+        aux = doc.selectXpath(xpath + "/td[18]").text().replaceAll("\\.(?=.*\\.)", "");
         s.setLiquid2Month(Double.parseDouble(aux));
 
-        aux = doc.selectXpath(xpath + "/td[18]").text().replace(",", ".");
+        aux = doc.selectXpath(xpath + "/td[19]").text().replaceAll("\\.(?=.*\\.)", "");
         s.setLiquidWorth(Double.parseDouble(aux));
 
-        aux = doc.selectXpath(xpath + "/td[19]").text().replace(",", ".");
+        aux = doc.selectXpath(xpath + "/td[20]").text().replace(",", ".");
         s.setLiquidDebtEquity(Double.parseDouble(aux));
 
-        s.setRevenueGrowth5Years(doc.selectXpath(xpath + "/td[20]").text());
-
-        aux = doc.selectXpath(xpath + "/td[21]").text().replace(",", ".");
-        s.setLiquityDebtEbitida(Double.parseDouble(aux));
+        s.setRevenueGrowth5Years(doc.selectXpath(xpath + "/td[21]").text());
 
         aux = doc.selectXpath(xpath + "/td[22]").text().replace(",", ".");
+        s.setLiquityDebtEbitida(Double.parseDouble(aux));
+
+        aux = doc.selectXpath(xpath + "/td[23]").text().replaceAll("\\.(?=.*\\.)", "");
         s.setMarketValue(Double.parseDouble(aux));
 
         return s;

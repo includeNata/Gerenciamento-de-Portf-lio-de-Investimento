@@ -56,31 +56,43 @@ public class FiiService {
             Fii f = new Fii();
             String aux;
             f.setPaper(doc.selectXpath(xpath+"/td[1]").text());
+
             f.setSegment(doc.selectXpath(xpath+"/td[2]").text());
+
             aux = doc.selectXpath(xpath+"/td[3]").text();
             aux = aux.replace(",","").replace(",",".");
             f.setQuotation(Double.parseDouble(aux));
+
             f.setFfO(doc.selectXpath(xpath+"/td[4]").text());
+
             f.setDividend(doc.selectXpath(xpath+"/td[5]").text());
+
             aux = doc.selectXpath(xpath+"/td[6]").text();
             aux = aux.replace(",",".");
             f.setpVp(Double.parseDouble(aux));
+
             aux = doc.selectXpath(xpath+"/td[7]").text();
             String validNumber = aux.replaceAll("\\.(?=.*\\.)", "");
             f.setMarketValue(Double.parseDouble(validNumber));
+
             aux = doc.selectXpath(xpath+"/td[8]").text();
             validNumber = aux.replaceAll("\\.(?=.*\\.)", "");
             f.setLiquidity(Double.parseDouble(validNumber));
+
             f.setQuantityProperty(Integer.parseInt(doc.selectXpath(xpath+"/td[9]").text()));
+
             aux  = doc.selectXpath(xpath+"/td[10]").text();
             aux =aux.replace(",","").replace(",",".");
             aux = aux.replaceAll("\\.(?=.*\\.)", "");
             f.setPriceM2(Double.parseDouble(aux));
+
             aux  = doc.selectXpath(xpath+"/td[11]").text();
             aux =aux.replace(",","").replace(",",".");
             aux = aux.replaceAll("\\.(?=.*\\.)", "");
             f.setRentM2(Double.parseDouble(aux));
+
             f.setCapRate(doc.selectXpath(xpath+"/td[12]").text());
+
             f.setAverageVacancy(doc.selectXpath(xpath+"/td[13]").text());
             return f;
     }

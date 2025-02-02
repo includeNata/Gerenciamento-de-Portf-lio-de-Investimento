@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import projectn.com.server.entities.Fii;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -26,7 +27,8 @@ public class FiiService {
          for(String s : list){
              fiis.add(gson.fromJson(s,Fii.class));
          }
-         int start = (int) pageable.getOffset();
+        fiis.sort(Comparator.comparing(Fii::getPaper));
+        int start = (int) pageable.getOffset();
          int end = Math.min(start + pageable.getPageSize(),list.size());
          List<Fii> pageContent  = fiis.subList(start,end);
          return new PageImpl<>(pageContent,pageable,pageable.getPageSize());

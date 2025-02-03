@@ -45,9 +45,10 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize)->{
                     authorize.requestMatchers(HttpMethod.POST,"/login").permitAll();
-                    authorize.requestMatchers(HttpMethod.POST,"/fiis").permitAll();
                     authorize.requestMatchers(HttpMethod.GET,"/fiis").permitAll();
+                    authorize.requestMatchers(HttpMethod.POST,"/fiis").permitAll();
                     authorize.requestMatchers(HttpMethod.GET,"/stock").permitAll();
+                    authorize.requestMatchers(HttpMethod.POST,"/stock").permitAll();
                     authorize.requestMatchers(HttpMethod.GET,"/coins/**").permitAll();
                     authorize.requestMatchers(HttpMethod.POST,"/users").permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();

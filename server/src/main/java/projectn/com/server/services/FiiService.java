@@ -12,10 +12,7 @@ import projectn.com.server.entities.Fii;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class FiiService {
@@ -41,9 +38,17 @@ public class FiiService {
     public List<Fii> recommendationFiis(List<Fii> fiisUser) {
         List<String> list = redisTemplate.opsForList().range("fiis", 0, -1);
         List<Fii> fiis = new ArrayList<>();
+        Set<String> addedPapers = new HashSet<>(); // Set para armazenar os papéis já adicionados
+
         for (String s : list) {
-            fiis.add(gson.fromJson(s, Fii.class));
+            Fii fii = gson.fromJson(s, Fii.class);
+
+            if (!addedPapers.contains(fii.getPaper())) {
+                fiis.add(fii);
+                addedPapers.add(fii.getPaper());  // Marca o papel como adicionado
+            }
         }
+
 
         double avgDividend = sortFiisByDividend(fiisUser);
         double avgPvp = sortFiisByPvp(fiisUser);

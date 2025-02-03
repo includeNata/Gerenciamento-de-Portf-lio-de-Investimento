@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import projectn.com.server.entities.Stock;
 import projectn.com.server.services.StockService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("stock")
@@ -21,5 +20,10 @@ public class StockController {
     @GetMapping
     public ResponseEntity<Page<Stock>> findAll(Pageable pageable) {
         return ResponseEntity.ok(stockService.findAll(pageable));
+    }
+
+    @PostMapping
+    public List<Stock> recommendationStock(@RequestBody List<Stock> stocks) {
+        return stockService.recommendationStock(stocks);
     }
 }

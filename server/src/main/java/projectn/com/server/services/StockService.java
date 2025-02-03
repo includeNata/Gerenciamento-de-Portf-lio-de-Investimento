@@ -28,7 +28,7 @@ public class StockService {
         for(String s : list){
             stock.add(gson.fromJson(s,Stock.class));
         }
-        stock.sort(Comparator.comparing(Stock::getPaper));
+
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(),list.size());
         List<Stock> pageContent  = stock.subList(start,end);

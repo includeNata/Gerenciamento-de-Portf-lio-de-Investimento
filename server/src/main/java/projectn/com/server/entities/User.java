@@ -15,7 +15,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
-    private String password;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "tb_users_roles" ,
@@ -25,10 +25,10 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String email, String password) {
+    public User(Long id, String email, String name) {
         this.id = id;
         this.email = email;
-        this.password = password;
+        this.name = name;
     }
 
     public Long getId() {
@@ -47,12 +47,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Role> getRoles() {

@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import projectn.com.server.DTO.StockDTO;
 import projectn.com.server.entities.Fii;
 import projectn.com.server.entities.Stock;
 
@@ -36,7 +37,7 @@ public class StockService {
         return new PageImpl<>(pageContent,pageable,pageable.getPageSize());
     }
 
-    public List<Stock> recommendationStock(List<Stock> stockUser){
+    public List<Stock> recommendationStock(List<StockDTO> stockUser){
         List<String> list = redisTemplate.opsForList().range("stock",0,-1);
         List<Stock> stock = new ArrayList<>();
         Set<String> addedPapers = new HashSet<>();
@@ -46,7 +47,7 @@ public class StockService {
 
             if (!addedPapers.contains(stockAux.getPaper())) {
                 stock.add(stockAux);
-                addedPapers.add(stockAux.getPaper());  // Marca o papel como adicionado
+                addedPapers.add(stockAux.getPaper());
             }
         }
 
@@ -59,7 +60,7 @@ public class StockService {
         double weightPvp = 0.25;
         double weightRoe = 0.25;
         double weightDividend = 0.25;
-
+        
         stock.sort(Comparator.comparingDouble(stockSort -> {
             double normalizedPl = parseDividend(stockSort.getpL());
             double normalizedPvp = parseDividend(stockSort.getpVp());
@@ -84,7 +85,7 @@ public class StockService {
         }
     }
 
-    private Double sortStockByPL(List<Stock> stockUser){
+    private Double sortStockByPL(List<StockDTO> stockUser){
         Double sumPl= stockUser.stream().mapToDouble(stock -> Double.parseDouble(stock.getpL().replace(",", ".")))
                 .sum();
 
@@ -92,7 +93,7 @@ public class StockService {
         return sumPl;
     }
 
-    private Double sortStockByPvp(List<Stock> stockUser){
+    private Double sortStockByPvp(List<StockDTO> stockUser){
         Double sumPvp = stockUser.stream().mapToDouble(stock -> Double.parseDouble(stock.getpVp().replace(",", ".")))
                 .sum();
 
@@ -100,7 +101,7 @@ public class StockService {
         return sumPvp;
     }
 
-    public Double sortStockByRoe(List<Stock> stockUser){
+    public Double sortStockByRoe(List<StockDTO> stockUser){
         Double sumRoe = stockUser.stream().mapToDouble(stock -> Double.parseDouble(stock.getRoe().replace("%", "").replace(",", ".")))
                 .sum();
 
@@ -108,7 +109,7 @@ public class StockService {
         return sumRoe;
     }
 
-    public Double sortStockByDividend(List<Stock> stockUser){
+    public Double sortStockByDividend(List<StockDTO> stockUser){
         Double sumDividend = stockUser.stream().mapToDouble(stock -> Double.parseDouble(stock.getDividend().replace("%", "").replace(",", ".")))
                 .sum();
 

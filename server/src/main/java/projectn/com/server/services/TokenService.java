@@ -26,13 +26,13 @@ public class TokenService {
 
     @Value("${api.security.token.secret}")
     private String secret;
-    public void generateToken(LoginDTO user) {
+    public Cookie generateToken(User user) {
         try {
             if (user != null) {
                 Algorithm algorithm = Algorithm.HMAC256(secret);
                 String token = JWT.create()
                         .withIssuer("auth-api") //Emissor do token
-                        .withSubject(user.email()) //Usuário que está recebendo o token
+                        .withSubject(user.getEmail()) //Usuário que está recebendo o token
                         .withExpiresAt(getExpirationDate()) //Tempo de expiração
                         .sign(algorithm);
 
@@ -44,10 +44,13 @@ public class TokenService {
                 cookie.setMaxAge(cookieExpiry);
 
                 response.addCookie(cookie);
+
+                return cookie;
             }
         } catch (JWTVerificationException exception) {
             throw new RuntimeException("Error while generating token", exception);
         }
+        return null;
     }
 
     public String validateToken(String token){

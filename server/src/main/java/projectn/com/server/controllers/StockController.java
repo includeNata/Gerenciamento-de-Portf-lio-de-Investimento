@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import projectn.com.server.DTO.StockDTO;
 import projectn.com.server.entities.Stock;
 import projectn.com.server.services.StockService;
 
@@ -23,7 +24,7 @@ public class StockController {
     }
 
     @PostMapping
-    public List<Stock> recommendationStock(@RequestBody List<Stock> stocks) {
+    public List<Stock> recommendationStock(@RequestBody List<StockDTO> stocks) {
         return stockService.recommendationStock(stocks);
     }
 }

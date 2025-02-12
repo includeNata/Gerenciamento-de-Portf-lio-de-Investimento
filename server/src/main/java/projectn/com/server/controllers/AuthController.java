@@ -2,14 +2,16 @@ package projectn.com.server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import projectn.com.server.DTO.AuthResponseDTO;
 import projectn.com.server.DTO.JwtAuthResponseDTO;
 import projectn.com.server.DTO.LoginDTO;
+import projectn.com.server.entities.User;
 import projectn.com.server.services.AuthService;
 
 @RestController
+@RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class AuthController {
 
     @Autowired
@@ -17,9 +19,18 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<JwtAuthResponseDTO> login(@RequestBody LoginDTO loginDTO){
-        String token = authService.login(loginDTO);
-        JwtAuthResponseDTO responseDTO = new JwtAuthResponseDTO(token,"Bearer");
-        return ResponseEntity.ok(responseDTO);
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDTO){
+        return authService.login(loginDTO);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponseDTO> register(@RequestBody User user){
+        return authService.register(user);
+    }
+
+    @GetMapping("/{token}")
+    public ResponseEntity<String> validationToken(@PathVariable String token){
+        System.out.println("dlfnpkdfnkdsbdskklbsdklf");
+        return authService.validationToken(token);
     }
 }

@@ -1,4 +1,4 @@
 package projectn.com.server.DTO;
 
-public record LoginDTO(String email, String password) {
+public record LoginDTO(String email) {
 }

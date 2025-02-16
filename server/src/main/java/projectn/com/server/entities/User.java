@@ -10,7 +10,8 @@ import java.util.Set;
 @Table(name = "tb_users")
 public class User {
 
-    @Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
     private String email;

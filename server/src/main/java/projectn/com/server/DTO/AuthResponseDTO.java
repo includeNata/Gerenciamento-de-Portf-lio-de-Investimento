@@ -5,9 +5,9 @@ import projectn.com.server.entities.User;
 public class AuthResponseDTO {
     private String message;
     private String status;
-    private User user;
+    private LoginDTO user;
 
-    public AuthResponseDTO(String message, String status, User user) {
+    public AuthResponseDTO(String message, String status, LoginDTO user) {
         this.message = message;
         this.status = status;
         this.user = user;
@@ -30,11 +30,11 @@ public class AuthResponseDTO {
         this.status = status;
     }
 
-    public User getUser() {
+    public LoginDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(LoginDTO user) {
         this.user = user;
     }
 }

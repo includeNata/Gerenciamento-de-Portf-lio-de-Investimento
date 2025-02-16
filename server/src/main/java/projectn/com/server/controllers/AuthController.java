@@ -9,9 +9,12 @@ import projectn.com.server.DTO.LoginDTO;
 import projectn.com.server.entities.User;
 import projectn.com.server.services.AuthService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
-@RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000/")
+@RequestMapping(value = "/auth")
 public class AuthController {
 
     @Autowired
@@ -19,8 +22,8 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDTO){
-        return authService.login(loginDTO);
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody String email){
+        return authService.login(email);
     }
 
     @PostMapping("/register")
@@ -28,9 +31,8 @@ public class AuthController {
         return authService.register(user);
     }
 
-    @GetMapping("/{token}")
-    public ResponseEntity<String> validationToken(@PathVariable String token){
-        System.out.println("dlfnpkdfnkdsbdskklbsdklf");
-        return authService.validationToken(token);
+    @GetMapping("/magic/token")
+    public ResponseEntity<String> validationToken(){
+        return authService.validationToken();
     }
 }

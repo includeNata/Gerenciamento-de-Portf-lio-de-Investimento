@@ -2,51 +2,39 @@ package projectn.com.server.services;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 import projectn.com.server.DTO.AuthResponseDTO;
 import projectn.com.server.DTO.LoginDTO;
 import projectn.com.server.entities.User;
 import projectn.com.server.repositories.UserRepository;
-import projectn.com.server.security.JwtTokenProvider;
 
-import java.util.List;
-import java.util.Objects;
+import java.net.URLDecoder;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class AuthService {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private TokenService tokenService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private JavaMailSender mailSender;
+
     @Autowired
     private HttpServletRequest request;
 
-
-    public ResponseEntity<AuthResponseDTO> login(LoginDTO loginDTO) {
+    public ResponseEntity<AuthResponseDTO> login(String email) {
         try {
-            Optional<User> userOptional = userRepository.findByEmail(loginDTO.email());
+            String emailDecodificado = URLDecoder.decode(email, "UTF-8").replace("=", "");
+            Optional<User> userOptional = userRepository.findByEmail(emailDecodificado);
 
             if (userOptional.isEmpty()) {
-                return ResponseEntity.badRequest().body(new AuthResponseDTO("User not found", "404", null));
+                return ResponseEntity.badRequest().body(new AuthResponseDTO("Usuário não encontrado", "404", null));
             }
 
             User user = userOptional.get();
@@ -54,10 +42,10 @@ public class AuthService {
             Cookie cookie = tokenService.generateToken(user);
 
             if (cookie == null) {
-                return ResponseEntity.badRequest().body(new AuthResponseDTO("Error generating magic link", "500", null));
+                return ResponseEntity.badRequest().body(new AuthResponseDTO("Erro para criar magic link", "500", null));
             }
 
-            String url = "http://localhost:8080/login/magic?token=" + cookie.getValue();
+            String url = "http://localhost:3000/auth/magic";
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(user.getEmail());
@@ -65,10 +53,10 @@ public class AuthService {
             message.setText("Clique no link para fazer login: " + url);
             mailSender.send(message);
 
-            return ResponseEntity.ok().body(new AuthResponseDTO("Magic link sent to your email", "200", user));
+            return ResponseEntity.ok().body(new AuthResponseDTO(url, "200", new LoginDTO(user.getEmail(), cookie.getValue())));
 
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new AuthResponseDTO("Error generating magic link", "500", null));
+            return ResponseEntity.badRequest().body(new AuthResponseDTO("Erro para criar magic link", "500", null));
         }
     }
 
@@ -77,29 +65,44 @@ public class AuthService {
         Optional<User> userAux = userRepository.findByEmail(user.getEmail());
 
         if(userAux.isPresent()) {
-            return ResponseEntity.badRequest().body(new AuthResponseDTO("Email already in use", "400", null));
+            return ResponseEntity.badRequest().body(new AuthResponseDTO("Email já está sendo utilizado", "400", null));
         }
 
         Cookie cookie = tokenService.generateToken(user);
 
         if(cookie == null) {
-            return ResponseEntity.badRequest().body(new AuthResponseDTO("Invalid email", "400", null));
+            return ResponseEntity.badRequest().body(new AuthResponseDTO("Email inválido", "400", null));
         }
 
-        return ResponseEntity.ok().body(new AuthResponseDTO("Login Successful", "200", user));
+        user.setId(null);
+        userRepository.save(user);
+        return ResponseEntity.ok().body(new AuthResponseDTO("Registro feito com sucesso", "200", new LoginDTO(user.getEmail(), cookie.getValue())));
     }
 
-    public ResponseEntity<String> validationToken(String token) {
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if (cookie.getName().equals("accessToken")) {
-                    if(Objects.equals(cookie.getValue(), token.replace("token=", ""))){
-                        return ResponseEntity.ok().body("Token Successfully Validated");
-                    }
+    public ResponseEntity<String> validationToken() {
+        try {
+            Cookie cookie = WebUtils.getCookie(request, "accessToken");
+
+            if (cookie == null) {
+                return ResponseEntity.badRequest().body("Nenhum cookie encontrado na requisição.");
+            }
+
+            String tokenFromCookie = cookie.getValue();
+
+            if (tokenFromCookie != null && !tokenFromCookie.isEmpty()) {
+                String validatedUser = tokenService.validateToken(tokenFromCookie);
+
+                if (validatedUser != null && !validatedUser.isEmpty()) {
+                    return ResponseEntity.ok().body("Token validado com sucesso para o usuário: " + validatedUser);
+                } else {
+                    return ResponseEntity.badRequest().body("Token inválido ou expirado.");
                 }
             }
-        }
 
-        return ResponseEntity.badRequest().body("Invalid token");
+            return ResponseEntity.badRequest().body("Cookie 'accessToken' não encontrado.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao validar o token: " + e.getMessage());
+        }
     }
+
 }

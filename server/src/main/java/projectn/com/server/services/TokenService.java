@@ -7,9 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import projectn.com.server.DTO.LoginDTO;
 import projectn.com.server.entities.User;
 
 import java.time.Instant;
@@ -18,14 +16,16 @@ import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
-    @Autowired
-    private HttpServletResponse response;
 
     @Value("${jwt.cookieExpiry}")
     private int cookieExpiry;
 
     @Value("${api.security.token.secret}")
     private String secret;
+
+    @Autowired
+    private HttpServletResponse response;
+
     public Cookie generateToken(User user) {
         try {
             if (user != null) {
@@ -40,7 +40,6 @@ public class TokenService {
                 cookie.setHttpOnly(true);
                 cookie.setSecure(false); // Altere para true se estiver usando HTTPS
                 cookie.setPath("/");
-                cookie.setAttribute("SameSite", "Strict"); // Ou "Lax"
                 cookie.setMaxAge(cookieExpiry);
 
                 response.addCookie(cookie);

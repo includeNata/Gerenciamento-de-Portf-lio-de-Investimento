@@ -35,4 +35,9 @@ public class AuthController {
     public ResponseEntity<String> validationToken(){
         return authService.validationToken();
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<AuthResponseDTO> logout(){
+        return authService.logout();
+    }
 }

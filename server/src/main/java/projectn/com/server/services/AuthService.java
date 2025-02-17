@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 import projectn.com.server.DTO.AuthResponseDTO;
 import projectn.com.server.DTO.LoginDTO;
+import projectn.com.server.entities.Role;
 import projectn.com.server.entities.User;
+import projectn.com.server.repositories.RoleRepository;
 import projectn.com.server.repositories.UserRepository;
 
 import java.net.URLDecoder;
@@ -27,6 +29,8 @@ public class AuthService {
 
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private RoleRepository roleRepository;
 
     public ResponseEntity<AuthResponseDTO> login(String email) {
         try {
@@ -39,9 +43,7 @@ public class AuthService {
 
             User user = userOptional.get();
 
-            Cookie cookie = tokenService.generateToken(user);
-
-            if (cookie == null) {
+            if (tokenService.generateToken(user) == null) {
                 return ResponseEntity.badRequest().body(new AuthResponseDTO("Erro para criar magic link", "500", null));
             }
 
@@ -53,8 +55,12 @@ public class AuthService {
             message.setText("Clique no link para fazer login: " + url);
             mailSender.send(message);
 
-            return ResponseEntity.ok().body(new AuthResponseDTO(url, "200", new LoginDTO(user.getEmail(), cookie.getValue())));
+            Cookie cookie = new Cookie("user-id", String.valueOf(user.getId()));
+            cookie.setHttpOnly(true);
+            cookie.setSecure(false);
+            cookie.setPath("/");
 
+            return ResponseEntity.ok().body(new AuthResponseDTO(url, "200", user));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new AuthResponseDTO("Erro para criar magic link", "500", null));
         }
@@ -62,22 +68,66 @@ public class AuthService {
 
 
     public ResponseEntity<AuthResponseDTO> register(User user) {
-        Optional<User> userAux = userRepository.findByEmail(user.getEmail());
+        try {
+            Optional<User> userAux = userRepository.findByEmail(user.getEmail());
+            if (userAux.isPresent()) {
+                return ResponseEntity.badRequest().body(new AuthResponseDTO("Email já está sendo utilizado", "400", null));
+            }
 
-        if(userAux.isPresent()) {
-            return ResponseEntity.badRequest().body(new AuthResponseDTO("Email já está sendo utilizado", "400", null));
+            Optional<Role> roleOptional = roleRepository.findById(2L);
+            if (roleOptional.isEmpty()) {
+                return ResponseEntity.badRequest().body(new AuthResponseDTO("Role com ID 2 não encontrada", "400", null));
+            }
+
+            Role role = roleOptional.get();
+
+            user.getRoles().add(role);
+
+
+            if (tokenService.generateToken(user) == null) {
+                return ResponseEntity.badRequest().body(new AuthResponseDTO("Erro para criar token", "500", null));
+            }
+
+            User userSave = userRepository.save(user);
+
+            Cookie cookie = new Cookie("user-id", String.valueOf(userSave.getId()));
+            cookie.setHttpOnly(true);
+            cookie.setSecure(false);
+            cookie.setPath("/");
+
+            return ResponseEntity.ok().body(new AuthResponseDTO("Registro feito com sucesso", "200", user));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new AuthResponseDTO("Erro ao registrar usuário", "500", null));
         }
-
-        Cookie cookie = tokenService.generateToken(user);
-
-        if(cookie == null) {
-            return ResponseEntity.badRequest().body(new AuthResponseDTO("Email inválido", "400", null));
-        }
-
-        user.setId(null);
-        userRepository.save(user);
-        return ResponseEntity.ok().body(new AuthResponseDTO("Registro feito com sucesso", "200", new LoginDTO(user.getEmail(), cookie.getValue())));
     }
+
+    public ResponseEntity<AuthResponseDTO> logout() {
+        try {
+            Cookie cookieToken = WebUtils.getCookie(request, "accessToken");
+            Cookie cookieId = WebUtils.getCookie(request, "userId");
+
+            if (cookieToken == null || cookieId == null) {
+                return ResponseEntity.badRequest().body(new AuthResponseDTO("Nenhum cookie encontrado", "400", null));
+            }
+
+            cookieToken.setValue(null);
+            cookieToken.setMaxAge(0);
+            cookieToken.setPath("/");
+
+            cookieId.setValue(null);
+            cookieId.setMaxAge(0);
+            cookieId.setPath("/");
+
+            ResponseEntity.ok().header("Set-Cookie", cookieToken.toString())
+                    .header("Set-Cookie", cookieId.toString())
+                    .build();
+
+            return ResponseEntity.ok().body(new AuthResponseDTO("Logout realizado com sucesso", "200", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new AuthResponseDTO("Erro ao realizar o logout", "500", null));
+        }
+    }
+
 
     public ResponseEntity<String> validationToken() {
         try {

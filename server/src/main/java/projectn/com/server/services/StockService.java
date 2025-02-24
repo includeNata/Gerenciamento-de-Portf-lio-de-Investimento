@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import projectn.com.server.DTO.StockDTO;
 import projectn.com.server.entities.Fii;
@@ -15,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StockService {
@@ -25,31 +27,33 @@ public class StockService {
     private RedisTemplate<String, String> redisTemplate;
 
     public Page<Stock> findAll(Pageable pageable){
-        List<String> list = redisTemplate.opsForList().range("stock",0,-1);
-        List<Stock> stock = new ArrayList<>();
-        for(String s : list){
-            stock.add(gson.fromJson(s,Stock.class));
-        }
+        List<Stock> stock = listStocksRedis();
 
         int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(),list.size());
+        int end = Math.min(start + pageable.getPageSize(),stock.size());
         List<Stock> pageContent  = stock.subList(start,end);
         return new PageImpl<>(pageContent,pageable,pageable.getPageSize());
     }
 
-    public List<Stock> recommendationStock(List<StockDTO> stockUser){
-        List<String> list = redisTemplate.opsForList().range("stock",0,-1);
+    public Stock findByName(String name) {
+        List<String> list = redisTemplate.opsForList().range("stock", 0, -1);
         List<Stock> stock = new ArrayList<>();
-        Set<String> addedPapers = new HashSet<>();
 
-        for(String s : list){
-            Stock stockAux = gson.fromJson(s,Stock.class);
-
-            if (!addedPapers.contains(stockAux.getPaper())) {
-                stock.add(stockAux);
-                addedPapers.add(stockAux.getPaper());
-            }
+        for (String s : list) {
+            Stock stockAux = gson.fromJson(s, Stock.class);
+            stock.add(stockAux);
         }
+
+        System.out.println(stock);
+        Stock stockAux = stock.stream()
+                .filter(stock1 -> stock1.getPaper().equals(name))
+                .findFirst()
+                .orElse(null);
+        return stockAux;
+    }
+
+    public List<Stock> recommendationStock(List<StockDTO> stockUser){
+        List<Stock> stock = listStocksRedis();
 
         double avgPl = sortStockByPL(stockUser);
         double avgPvp = sortStockByPvp(stockUser);
@@ -72,6 +76,50 @@ public class StockService {
                     (weightRoe * Math.abs(normalizedRoe - avgRoe)) +
                     (weightDividend * Math.abs(normalizedDividend - avgDividend));
         }));
+
+        return stock;
+    }
+
+    public Page<Stock> findByDividend(Pageable pageable){
+        return getStocks(pageable, Comparator.comparing(Stock::getDividend));
+    }
+
+    public Page<Stock> findByMarketValue(Pageable pageable){
+        return getStocks(pageable, Comparator.comparing(Stock::getMarketValue));
+    }
+
+    public Page<Stock> findByLiquidMargin(Pageable pageable){
+        return getStocks(pageable, Comparator.comparing(Stock::getLiquidMargin));
+    }
+
+    public Page<Stock> findByRevenueGrowth(Pageable pageable){
+        return getStocks(pageable, Comparator.comparing(Stock::getRevenueGrowth5Years));
+    }
+
+    private Page<Stock> getStocks(Pageable pageable, Comparator<Stock> comparing) {
+        List<Stock> stock = listStocksRedis();
+
+        stock.sort(comparing.reversed());
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(),stock.size());
+        List<Stock> pageContent  = stock.subList(start,end);
+        return new PageImpl<>(pageContent,pageable,pageable.getPageSize());
+    }
+
+
+    private List<Stock> listStocksRedis(){
+        List<String> list = redisTemplate.opsForList().range("stock",0,-1);
+        List<Stock> stock = new ArrayList<>();
+        Set<String> addedPapers = new HashSet<>();
+
+        for(String s : list){
+            Stock stockAux = gson.fromJson(s,Stock.class);
+
+            if (!addedPapers.contains(stockAux.getPaper())) {
+                stock.add(stockAux);
+                addedPapers.add(stockAux.getPaper());
+            }
+        }
 
         return stock;
     }

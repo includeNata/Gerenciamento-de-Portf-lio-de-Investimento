@@ -38,9 +38,9 @@ public class StockController {
         return stockService.findByMarketValue(pageable);
     }
 
-    @GetMapping("find/liquid-margin")
-    public Page<Stock> findByLiquidMargin(Pageable pageable) {
-        return stockService.findByLiquidMargin(pageable);
+    @GetMapping("find/liquid-average")
+    public Page<Stock> findByLiquidAverage(Pageable pageable) {
+        return stockService.findByLiquidAverage(pageable);
     }
 
     @GetMapping("find/revenue-growth")
@@ -51,6 +51,11 @@ public class StockController {
     @GetMapping("find/pl")
     public Page<Stock> findByPL(Pageable pageable) {
         return stockService.findByPL(pageable);
+    }
+
+    @GetMapping("find/roe")
+    public Page<Stock> findByROE(Pageable pageable) {
+        return stockService.findByRoe(pageable);
     }
 
     @PostMapping

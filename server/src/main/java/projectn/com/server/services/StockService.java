@@ -88,9 +88,22 @@ public class StockService {
         return getStocks(pageable, Comparator.comparing(Stock::getMarketValue));
     }
 
-    public Page<Stock> findByLiquidMargin(Pageable pageable){
-        return getStocks(pageable, Comparator.comparing(Stock::getLiquidMargin));
+    public Page<Stock> findByLiquidAverage(Pageable pageable){
+        List<Stock> stock = listStocksRedis();
+
+        stock.sort(Comparator.comparingDouble((Stock stockSort) -> {
+            double doubleLiquidMargin = parseDividend(stockSort.getLiquidMargin().replace("%", ""));
+            double doubleLiquidDebtEquity = parseDividend(stockSort.getLiquidDebtEquity().replace("%", ""));
+
+            return -doubleLiquidMargin + doubleLiquidDebtEquity;
+        }));
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), stock.size());
+        List<Stock> pageContent = stock.subList(start, end);
+        return new PageImpl<>(pageContent, pageable, pageable.getPageSize());
     }
+
 
     public Page<Stock> findByRevenueGrowth(Pageable pageable){
         return getStocks(pageable, Comparator.comparing(Stock::getRevenueGrowth5Years));
@@ -98,6 +111,10 @@ public class StockService {
 
     public Page<Stock> findByPL(Pageable pageable){
         return getStocks(pageable, Comparator.comparing(Stock::getpL));
+    }
+
+    public Page<Stock> findByRoe(Pageable pageable){
+        return getStocks(pageable, Comparator.comparing(Stock::getRoe));
     }
 
     private Page<Stock> getStocks(Pageable pageable, Comparator<Stock> comparing) {

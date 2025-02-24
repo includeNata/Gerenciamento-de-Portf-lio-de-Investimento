@@ -58,6 +58,11 @@ public class StockController {
         return stockService.findByRoe(pageable);
     }
 
+    @GetMapping("find/roic")
+    public Page<Stock> findByROIC(Pageable pageable) {
+        return stockService.findByRoic(pageable);
+    }
+
     @PostMapping
     public List<Stock> recommendationStock(@RequestBody List<StockDTO> stocks) {
         return stockService.recommendationStock(stocks);

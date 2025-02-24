@@ -117,6 +117,10 @@ public class StockService {
         return getStocks(pageable, Comparator.comparing(Stock::getRoe));
     }
 
+    public Page<Stock> findByRoic(Pageable pageable){
+        return getStocks(pageable, Comparator.comparing(Stock::getRoic));
+    }
+
     private Page<Stock> getStocks(Pageable pageable, Comparator<Stock> comparing) {
         List<Stock> stock = listStocksRedis();
 

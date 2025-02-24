@@ -96,6 +96,10 @@ public class StockService {
         return getStocks(pageable, Comparator.comparing(Stock::getRevenueGrowth5Years));
     }
 
+    public Page<Stock> findByPL(Pageable pageable){
+        return getStocks(pageable, Comparator.comparing(Stock::getpL));
+    }
+
     private Page<Stock> getStocks(Pageable pageable, Comparator<Stock> comparing) {
         List<Stock> stock = listStocksRedis();
 

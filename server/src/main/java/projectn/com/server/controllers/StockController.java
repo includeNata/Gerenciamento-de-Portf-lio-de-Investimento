@@ -28,24 +28,29 @@ public class StockController {
         return ResponseEntity.ok(stockService.findByName(name));
     }
 
-    @GetMapping("dividend")
+    @GetMapping("find/dividend")
     public Page<Stock> findByDividend(Pageable pageable) {
         return stockService.findByDividend(pageable);
     }
 
-    @GetMapping("market-value")
+    @GetMapping("find/market-value")
     public Page<Stock> findByMarketValue(Pageable pageable) {
         return stockService.findByMarketValue(pageable);
     }
 
-    @GetMapping("liquid-margin")
+    @GetMapping("find/liquid-margin")
     public Page<Stock> findByLiquidMargin(Pageable pageable) {
         return stockService.findByLiquidMargin(pageable);
     }
 
-    @GetMapping("revenue-growth")
+    @GetMapping("find/revenue-growth")
     public Page<Stock> findByRevenueGrowth(Pageable pageable) {
         return stockService.findByRevenueGrowth(pageable);
+    }
+
+    @GetMapping("find/pl")
+    public Page<Stock> findByPL(Pageable pageable) {
+        return stockService.findByPL(pageable);
     }
 
     @PostMapping
